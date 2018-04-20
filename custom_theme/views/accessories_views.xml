@@ -224,7 +224,7 @@
 															</a>
 															</t>
 															<t t-if="product.is_wishlist()">
-															<a class="o_fill_wishlist" t-att-data-product-product-id="product.product_variant_ids[0].id">
+															<a class="o_add_wishlist" t-att-data-product-product-id="product.product_variant_ids[0].id">
 																<i class="fa fa-heart"></i>
 															</a>
 															</t>
@@ -244,7 +244,7 @@
 															</a>
 															</t>
 															<t t-if="product.is_wishlist()">
-																<a class="o_fill_wishlist" t-att-data-product-product-id="product.product_variant_ids[0].id">
+																<a class="o_add_wishlist" t-att-data-product-product-id="product.product_variant_ids[0].id">
 																<i class="fa fa-heart"></i>
 																</a>
 															</t>

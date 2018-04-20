@@ -53,6 +53,7 @@ class website_sale_custom(WebsiteSale):
 
 	@http.route(['/shop/cart/update'], type='http', auth="public", methods=['POST'], website=True, csrf=False)
 	def cart_update(self, product_id, add_qty=1, set_qty=0, **kw):
+		print '-call-------shop/cart-------'
 		request.website.sale_get_order(force_create=1)._cart_update(
 			product_id=int(product_id),
 			add_qty=add_qty,
@@ -366,7 +367,8 @@ class website_sale_custom(WebsiteSale):
 			return request.redirect('/shop/payment/confirmation/%s' % order.id)
 
 
-# Wish List
+class CustomTheme(http.Controller):
+	
 	@http.route(['/shop/wishlist/add'], type='json', auth="user", website=True)
 	def add_to_wishlist(self, product_id, price=False, **kw):
 		if not price:
@@ -396,21 +398,8 @@ class website_sale_custom(WebsiteSale):
 			request.uid
 		)
 		return True
-
-	@http.route(['/shop/wishlist'], type='http', auth="public", website=True)
-	def get_wishlist(self, count=False, **kw):
-		print '---------AQQQQQQQQQQQQQQQQQQQQQQ', request.website.user_id
-		values = request.env['product.wishlist'].with_context(display_default_code=False).sudo().search([('partner_id', '=', request.env.user.partner_id.id)])
-		if count:
-			return request.make_response(json.dumps(values.mapped('product_id').ids))
-
-		# if not len(values):
-		# 	return request.redirect(	"/shop")
-
-		return request.render("custom_theme.product_wishlist", dict(wishes=values))
-
-
-class CustomTheme(http.Controller):
+	
+	
 	@http.route('/wishlist/user', type='json', auth="public", website=True)
 	def check_login_user(self, **post):
 		print '--------call-----jsonpp------', request.session
@@ -420,4 +409,19 @@ class CustomTheme(http.Controller):
 			print '-------else---------'
 			return False
 
-		
+	@http.route(['/shop/wishlist'], type='http', auth="public", website=True)
+	def get_wishlist(self, count=False, **kw):
+		print '---------AQQQQQQQQQQQQQQQQQQQQQQ', request.website.user_id
+		validate_wishlist = self.check_login_user()
+		print '------validate---wishlist-0000', validate_wishlist
+		if validate_wishlist:
+			values = request.env['product.wishlist'].with_context(display_default_code=False).sudo().search([('partner_id', '=', request.env.user.partner_id.id)])
+			if count:
+				return request.make_response(json.dumps(values.mapped('product_id').ids))
+
+			# if not len(values):
+			# 	return request.redirect(	"/shop")
+
+			return request.render("custom_theme.product_wishlist", dict(wishes=values))
+		else:
+			return request.redirect('/web/login')

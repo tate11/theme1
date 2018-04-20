@@ -410,7 +410,7 @@
                                 <div itemscope="itemscope" itemtype="http://schema.org/Product">
                                     <div class="oe_product_image">
                                         <div class="p_photo"><t t-set="product" t-value="td_product['product']"/>
-											<t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount' and (compute_currency(product.website_public_price) != product.website_price)">
+											<t t-if="product.website_price_difference">
                                             	<div class="p_sale">
 													<span><t t-esc="website_price_difference"/></span>
 												
@@ -470,7 +470,7 @@
                                         <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer"
                                              class="product_price" t-if="product.product_variant_ids">
                                             <b>
-                                                <t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount'">
+                                                <t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='without_discount'">
                                                     <del class="text-danger mr8" style="white-space: nowrap;"
                                                          t-esc="compute_currency(product.website_public_price)"
                                                          t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}"/>
@@ -502,7 +502,7 @@
                                                             </a>
                                                         </t>
                                                         <t t-if="product.is_wishlist()">
-                                                            <a class="o_fill_wishlist"
+                                                            <a class="o_add_wishlist"
                                                                t-att-data-product-product-id="product.product_variant_ids[0].id">
                                                                 <i class="fa fa-heart"></i>
                                                             </a>
@@ -530,7 +530,7 @@
                                                             </a>
                                                         </t>
                                                         <t t-if="product.is_wishlist()">
-                                                            <a class="o_fill_wishlist"
+                                                            <a class="o_add_wishlist"
                                                                t-att-data-product-product-id="product.product_variant_ids[0].id">
                                                                 <i class="fa fa-heart"></i>
                                                             </a>
@@ -573,7 +573,7 @@
                                     <div class="oe_product_image">
 										<t t-set="product" t-value="td_product['product']"/>
                                         <div class="p_photo">
-                                            <t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount' and (compute_currency(product.website_public_price) != product.website_price)">
+                                            <t t-if="product.website_price_difference">
                                             	<div class="p_sale">
 													<span><t t-esc="website_price_difference"/></span>
 												
@@ -634,11 +634,7 @@
                                         <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer"
                                              class="product_price" t-if="product.product_variant_ids">
                                             <b>
-                                                <!--t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount'">
-                                                    <del class="text-danger mr8" style="white-space: nowrap;"
-                                                         t-esc="compute_currency(product.website_public_price)"
-                                                         t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}"/>
-                                                </t-->
+                                               
 
                                                 <span t-esc="product.website_price"
                                                       t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
@@ -666,7 +662,7 @@
                                                             </a>
                                                         </t>
                                                         <t t-if="product.is_wishlist()">z
-                                                            <a class="o_fill_wishlist"
+                                                            <a class="o_add_wishlist"
                                                                t-att-data-product-product-id="product.product_variant_ids[0].id">
                                                                 <i class="fa fa-heart"></i>
                                                             </a>
@@ -694,7 +690,7 @@
                                                             </a>
                                                         </t>
                                                         <t t-if="product.is_wishlist()">
-                                                            <a class="o_fill_wishlist"
+                                                            <a class="o_add_wishlist"
                                                                t-att-data-product-product-id="product.product_variant_ids[0].id">
                                                                 <i class="fa fa-heart"></i>
                                                             </a>
@@ -737,10 +733,8 @@
                                 <div itemscope="itemscope" itemtype="http://schema.org/Product">
                                     <div class="oe_product_image">
                                         <div class="l_photo">
-											<t t-if="latest.product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount' and (compute_currency(latest.product.website_public_price) != latest.product.website_price)">
+											<t t-if="latest.product.website_price_difference">
                                             	<div class="l_sale">
-													<span><t t-esc="website_price_difference"/></span>
-												compute_currency
 													
                                                 	<span><t t-esc="int((compute_currency(latest.product.website_public_price) - latest.product.website_price) *100 / compute_currency(latest.product.website_public_price))"/>% off</span>
 												
@@ -771,6 +765,12 @@
                                             </a>
                                         </b>
                                         <div class="l_price">
+											
+											<t t-if="latest.product.website_price_difference and website.get_current_pricelist().discount_policy=='without_discount'">
+                                            <del class="text-danger mr8" style="white-space: nowrap;"
+                                                 t-esc="compute_currency(latest.product.website_public_price)"
+                                                 t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}"/>
+                                            </t>
                                             <span t-esc="latest.product.website_price"
                                                   t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                                             <span itemprop="price" style="display:none;"
@@ -791,7 +791,7 @@
 														</a>
 													</t>
 													<t t-if="latest.product.is_wishlist()">
-														<a class="o_fill_wishlist" t-att-data-product-product-id="latest.product.product_variant_ids[0].id">
+														<a class="o_add_wishlist" t-att-data-product-product-id="latest.product.product_variant_ids[0].id">
 															<i class="fa fa-heart"></i>
 														</a>
 													</t>
@@ -822,7 +822,7 @@
 
 
                                         <div class="l_photo">
-                                            <t t-if="latest.product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount' and (compute_currency(latest.product.website_public_price) != latest.product.website_price)">
+                                            <t t-if="latest.product.website_price_difference">
                                             	<div class="l_sale">
 													<span><t t-esc="website_price_difference"/></span>
 												
@@ -878,7 +878,7 @@
 														</a>
 													</t>
 													<t t-if="latest.product.is_wishlist()">
-														<a class="o_fill_wishlist" t-att-data-product-product-id="latest.product.product_variant_ids[0].id">
+														<a class="o_add_wishlist" t-att-data-product-product-id="latest.product.product_variant_ids[0].id">
 															<i class="fa fa-heart"></i>
 														</a>
 													</t>
@@ -1136,7 +1136,7 @@
                                     </a>
                                 </t>
                                 <t t-if="product.is_wishlist()">
-                                    <a class="o_fill_wishlist"
+                                    <a class="o_add_wishlist"
                                        t-att-data-product-product-id="product.product_variant_ids[0].id">
                                         <i class="fa fa-heart"></i>
                                     </a>
@@ -1161,7 +1161,7 @@
                                     </a>
                                 </t>
                                 <t t-if="product.is_wishlist()">
-                                    <a class="o_fill_wishlist"
+                                    <a class="o_add_wishlist"
                                        t-att-data-product-product-id="product.product_variant_ids[0].id">
                                         <i class="fa fa-heart"></i>
                                     </a>
