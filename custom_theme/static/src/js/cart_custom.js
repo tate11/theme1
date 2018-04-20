@@ -5,7 +5,7 @@ odoo.define('custom_theme.cart', function (require) {
     var core = require('web.core');
     var _t = core._t;
 
-    var shopping_cart_link = $('li a[href$="/shop/cart"]');
+    var shopping_cart_link = $('li[class="dropdown"] a[href$="/shop/cart"]');
     var shopping_cart_link_counter;
     shopping_cart_link.popover({
         trigger: 'manual',

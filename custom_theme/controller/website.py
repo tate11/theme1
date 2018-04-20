@@ -514,14 +514,19 @@ class Website_custom(Website):
         print new_values
         return new_values, errors, error_msg
 
+    def _get_mandatory_billing_fields(self):
+        return ["name", "last_name", "login", "phone", "street", "city", "country_id", "zip", "state_id", "password"]
+
+    def _get_mandatory_shipping_fields(self):
+        return ["name", "street", "city", "country_id"]
+
     def checkout_form_validate(self, mode, all_form_values, data):
         error = dict()
         error_message = []
 
         # Required fields from form
         required_fields = filter(None, (all_form_values.get('field_required') or '').split(','))
-        # required_fields += mode[1] == 'shipping' and self._get_mandatory_shipping_fields() or self._get_mandatory_billing_fields()
-
+        required_fields += mode == False and self._get_mandatory_shipping_fields() or self._get_mandatory_billing_fields()
         if data.get('country_id'):
             country = request.env['res.country'].browse(int(data.get('country_id')))
             if 'state_code' in country.get_address_fields() and country.state_ids:

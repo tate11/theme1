@@ -17,6 +17,9 @@
 				                <div class="register_inner">
 				                    <h1>Register Account</h1>
 				                    <p>If you already have an account with us, please login at the <a href="/web/login">login page</a>.</p>
+				                    <t t-if="error" t-foreach="error.get('error_message', [])" t-as="err">
+		                                <h4 class="text-danger" t-esc="err" />
+		                            </t>
 				                    <form method="post" class="checkout_autoformat register_form" id="regitration_user">
 				                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
 				                        <fieldset>
@@ -24,7 +27,7 @@
 				                            <div class="form-group" t-attf-class="form-group div_name required #{error.get('name') and 'has-error' or ''} ">
 				                                <label class="col-sm-2 control-label" for="name">First Name</label>
 				                                <div class="col-sm-10">
-				                                    <input type="text" name="name" t-att-value="order.partner_id.name or 'name' in checkout and checkout['name']" placeholder="First Name" class="form-control"/>
+				                                    <input type="text" name="name" placeholder="First Name" class="form-control"/>
 				                                </div>
 				                            </div>
 				                            <div class="clearfix"></div>
@@ -65,14 +68,14 @@
 				                                </div>
 				                            </div>
 				                            <div class="clearfix"></div>
-				                            <div class="form-group required" t-attf-class="form-group  #{error.get('street') and 'has-error' or ''} div_street">
+				                            <div class="form-group required" t-attf-class="form-group  #{error.get('street') and 'has-error' or ''} div_street required">
 				                                <label class="col-sm-2 control-label" for="street">Address 1</label>
 				                                <div class="col-sm-10">
 				                                    <input type="text" name="street" t-att-value="order.partner_id.street or 'street' in checkout and checkout['street']" placeholder="Address 1" class="form-control"/>
 				                                </div>
 				                            </div>
 				                            <div class="clearfix"></div>
-				                            <div class="form-group" t-attf-class="form-group  #{error.get('street2') and 'has-error' or ''} div_street required">
+				                            <div class="form-group" t-attf-class="form-group  #{error.get('street2') and 'has-error' or ''} div_street">
 				                                <label class="col-sm-2 control-label" for="street2">Address 2</label>
 				                                <div class="col-sm-10">
 				                                    <input type="text" name="street2" t-att-value="order.partner_id.street2 or 'street2' in checkout and checkout['street2']" placeholder="Address 2" class="form-control"/>
@@ -86,7 +89,7 @@
 				                                </div>
 				                            </div>
 				                            <div class="clearfix"></div>
-				                            <div class="form-group required" t-attf-class="form-group #{error.get('zip') and 'has-error' or ''} div_zip">
+				                            <div class="form-group required" t-attf-class="form-group #{error.get('zip') and 'has-error' or ''} div_zip required">
 				                                <label class="col-sm-2 control-label" for="zip">Post Code</label>
 				                                <div class="col-sm-10">
 				                                    <input type="text" name="zip" t-att-value="order.partner_id.zip or 'zip' in checkout and checkout['zip']" placeholder="Post Code" class="form-control"/>
@@ -109,7 +112,7 @@
 				                                </div>
 				                            </div>
 				                            <div class="clearfix"></div>
-				                            <div class="form-group required" t-attf-class="form-group #{error.get('state_id') and 'has-error' or ''}  div_state">
+				                            <div class="form-group required" t-attf-class="form-group #{error.get('state_id') and 'has-error' or ''}  div_state required">
 				                                <label class="col-sm-2 control-label" for="state_id">Region / State</label>
 				                                <div class="col-sm-10">
 				                                    <div class="#">
@@ -161,7 +164,7 @@
 				                        <div class="buttons">
 				                            <div class="pull-right" style="margin-bottom: 30px;">
 				                                I have read and agree to the 
-				                                <a href="#" class="agree_privacy"><b>Privacy Policy</b></a>
+				                                <a href="/privacy_policy" target="_blank" class="agree_privacy"><b>Privacy Policy</b></a>
 				                                <input type="checkbox" name="agree" value="1" id="agree1"/>
 				                                <label for="agree1"></label>
 				                                &amp;nbsp;
