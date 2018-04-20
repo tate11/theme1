@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template id="template" xml:space="preserve">
+    <t t-extend="UserMenu">
+       <t t-jquery="a[data-menu='documentation']" t-operation="replace"></t>
+       <t t-jquery="a[data-menu='support']" t-operation="replace"></t>
+       <t t-jquery="a[data-menu='account']" t-operation="replace"></t>
+       <t t-jquery="li.divider" t-operation="replace"></t>
+    </t>
+    <!--t t-extend="mail.client_action">
+      <t t-jquery=".o_mail_request_permission" t-operation="inner">
+         <span t-esc="request.env['website'].sudo().search([])[0].company_name or ''"/>needs Your permission is required to <a href="#"> enable desktop notifications</a>.
+      </t>
+    </t-->
+</template>
