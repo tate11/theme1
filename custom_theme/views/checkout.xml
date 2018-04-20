@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="custom_checkout" inherit_id="website_sale.checkout" priority="200">
+		<xpath expr="//div[@id='wrap']" position="replace">
+			<section class="checkout_main_wrapper">
+            <div class="container oe_website_sale">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="breadcrumb" style="margin-top: 45px;">
+                            <li><a href="/"><i class="fa fa-home"></i></a></li>
+                            <li><a href="/shop/cart">Shopping Cart</a></li>
+                            <li><span>Checkout</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12 ">
+                        <div class="#">
+                            <h1>Checkout</h1>
+		                    <div class="oe_cart">
+		                    <div class="chkt_custom_panel panel-group" id="accordion">
+                                <div class="panel panel-default" >
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a href="#checkout-option" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" aria-expanded="false">Step 1: Checkout Options <i class="fa fa-caret-down"></i></a>
+                                        </h4>
+                                    </div>
+                                    <t t-if="order.partner_id.name == 'Public user'">
+                                    <div id="checkout-option" class="checkout_option panel-collapse collapse" aria-expanded="false" style="height: 0px;" >
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h2>New Customer</h2>
+                                                    <p>Checkout Options:</p>
+                                                    <form action="#account-billing">
+                                                    <div class="radio">
+                                                        <input type="radio" name="account" value="register" checked="checked" id="accountregister0"/>
+                                                        <label for="accountregister0">Register Account	
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <input type="radio" name="account" value="guest" id="accountguest1"/>
+                                                        <label for="accountguest1">Guest Checkout</label>
+                                                    </div>
+                                                    <p>By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
+
+                                                    <input id="register_account" type="button" value="Continue" class="btn btn-primary"/>
+                                                </form>
+                                                </div>
+                                                <div class="col-md-6">
+                                                <div class="login_box">
+                                                    <div class="well">
+                                                        <h2>Returning Customer</h2>
+                                                        <p><strong>I am a returning customer</strong></p>
+                                                        <form class="oe_login_form form_custom" role="form"
+                                                            t-attf-action="/web/login{{ '?debug' if debug else '' }}" method="post"
+                                                            onsubmit="this.action = this.action + location.hash">
+                                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                            <div class="form-group field-db" t-if="databases and len(databases) &gt; 1">
+                                                                <label for="db" class="control-label">Database</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" name="db" t-att-value="request.db" id="db"
+                                                                        class="form-control" required="required" readonly="readonly" />
+                                                                    <span class="input-group-btn">
+                                                                        <a href="/web/database/selector" class="btn btn-default db_btn">
+                                                                            Select
+                                                                            <i class="fa fa-database"></i>
+                                                                        </a>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <label class="control-label" for="input-email">E-Mail Address</label>
+                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"  placeholder="E-Mail Address" class="form-control"/>
+                                                            </div>
+
+                                                            <div class="form-group field-login group">
+                                                                <input type="text" name="login" t-att-value="login" id="login"
+                                                                    class="form-control" autofocus="autofocus" autocapitalize="off"
+                                                                    placeholder="Enter your email address">
+                                                                    <span class="highlight"></span>
+                                                                    <span class="bar"></span>
+                                                                </input>
+                                                            </div>
+
+                                                            <div class="form-group field-password group">
+                                                                <label class="control-label" for="input-password">Password</label>
+                                                                <input type="password" name="password" id="password" class="form-control"
+                                                                    autocomplete="current-password" t-att-autofocus="'autofocus' if login else None"
+                                                                    maxlength="4096" placeholder="Enter your password">
+                                                                    <span class="highlight"></span>
+                                                                    <span class="bar"></span>
+                                                                </input>
+                                                                <a href='/forgot_password_custom'>Forgotten Password</a>
+                                                            </div>
+                                                            <input type="hidden" name="redirect" t-att-value=" '/shop/checkout'" />  
+                                                            <input type="submit" value="Login" class="btn btn-primary"/>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </t>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a href="#account-billing" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" aria-expanded="false">Step 2: Account Billing Details<i class="fa fa-caret-down"></i></a>
+                                        </h4>
+                                    </div>
+                                    <div id="account-billing" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <form method="post" class="checkout_autoformat" id="regitration_user"  >
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                            <t t-if="error" t-foreach="error.get('error_message', [])" t-as="err">
+                                                <h4 class="text-danger" t-esc="err" />
+                                            </t>    
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <fieldset>
+                                                        <legend>Your Personal Details</legend>
+                                                        <div t-attf-class="form-group div_name required #{error.get('name') and 'has-error' or ''} " >
+                                                            <label class="control-label" for="name">Name</label>
+                                                            <input type="text" name="name" t-att-value="order.partner_id.name or 'name' in checkout and checkout['name']" placeholder="First Name" class="form-control"/>
+                                                        </div>
+                                                        
+                                                        <div t-attf-class="form-group #{error.get('login') and 'has-error' or ''} required" id="div_email">
+                                                            <label class="control-label"  for="login">E-Mail</label>
+                                                            <input type="text" name="login" t-att-value="order.partner_id.email or 'login' in checkout and checkout['login']" placeholder="E-Mail" class="form-control"/>
+                                                        </div>
+                                                        <div t-attf-class="form-group required #{error.get('phone') and 'has-error' or ''}" id="div_phone">
+                                                            <label class="control-label" for="phone">Telephone</label>
+                                                            <input type="text" name="phone" t-att-value="order.partner_id.phone or 'phone' in checkout and checkout['phone']" placeholder="Telephone" id="input-payment-telephone" class="form-control"/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="fax">Fax</label>
+                                                            <input type="text" name="fax" t-att-value="order.partner_id.fax or 'fax' in checkout and checkout['fax']" placeholder="Fax" class="form-control"/>
+                                                        </div>
+                                                    </fieldset>
+                                                    <t t-if="order.partner_id.name == 'Public user'">
+                                                    <fieldset class="password">
+                                                        <legend>Your Password</legend>
+                                                        <div class="form-group required">
+                                                            <label class="control-label" for="password">Password</label>
+                                                            <input type="password" name="password" value="" placeholder="Password" class="form-control"/>
+                                                        </div>
+                                                        <div class="form-group required">
+                                                            <label class="control-label" for="confirm">Password Confirm</label>
+                                                            <input type="password" name="confirm" value="" placeholder="Password Confirm" class="form-control"/>
+                                                        </div>
+                                                    </fieldset>
+                                                    </t>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <fieldset id="address" class="required">
+                                                        <legend>Your Address</legend>
+                                                        <t t-if="mode == ('new', 'billing')">
+                                                        <div t-attf-class="form-group  #{error.get('company_name') required">
+                                                            <label class="control-label" for="company_name">Company</label>
+                                                            <input type="text" name="company_name" t-att-value="order.partner_id.company_name or 'company_name' in checkout and checkout['company_name']" placeholder="Company" class="form-control"/>
+                                                        </div>
+                                                        <div t-attf-class="form-group #{error.get('vat') and 'has-error' or ''} div_vat">
+                                                            <label class="control-label label-optional" for="vat">TIN / VAT </label>
+                                                            <input type="text" name="vat" class="form-control" t-att-value="'vat' in checkout and checkout['vat']" />
+                                                        </div>
+                                                        </t>
+                                                        <div t-attf-class="form-group  #{error.get('street') and 'has-error' or ''} div_street required">
+                                                            <label class="control-label" for="street">Address 1</label>
+                                                            <input type="text" name="street" t-att-value="order.partner_id.street or 'street' in checkout and checkout['street']" placeholder="Address 1" class="form-control"/>
+                                                        </div>
+                                                        <div t-attf-class="form-group  #{error.get('street2') and 'has-error' or ''} div_street required">
+                                                            <label class="control-label" for="street2">Address 2</label>
+                                                            <input type="text" name="street2" t-att-value="order.partner_id.street2 or 'street2' in checkout and checkout['street2']" placeholder="Address 2" class="form-control"/>
+                                                        </div>
+                                                        <div t-attf-class="form-group required #{error.get('city') and 'has-error' or ''} div_city">
+                                                            <label class="control-label" for="city">City</label>
+                                                            <input type="text" name="city" t-att-value="order.partner_id.city or 'city' in checkout and checkout['city']" placeholder="City" class="form-control"/>
+                                                        </div>
+                                                        <div t-attf-class="form-group #{error.get('zip') and 'has-error' or ''} required div_zip">
+                                                            <label class="control-label" for="zip">Post Code</label>
+                                                            <input type="text" name="zip" t-att-value="order.partner_id.zip or 'zip' in checkout and checkout['zip']" placeholder="Post Code" class="form-control"/>
+                                                        </div>
+                                                        <div t-attf-class="form-group #{error.get('country_id') and 'has-error' or ''} div_country required">
+                                                            <label class="control-label" for="country_id">Country</label>
+                                                            <div class="#">
+                                                                <select id="country_id" name="country_id" class="form-control">
+                                                                <option value="">Country...</option>
+                                                                <t t-foreach="countries" t-as="c">
+                                                                    <option t-att-value="c.id" t-att-selected="c.id == (country and country.id or -1)">
+                                                                        <t t-esc="c.name" />
+                                                                    </option>
+                                                                </t>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+                                                        <div t-attf-class="form-group #{error.get('state_id') and 'has-error' or ''}  div_state required">
+                                                            <label class="control-label" for="state_id">Region / State</label>
+                                                            <div class="#">
+                                                                <select class="form-control " name="state_id" data-init="1">
+                                                                    <option value="">State / Province...</option>
+                                                                    <t t-foreach="country and country.state_ids or []" t-as="s">
+                                                                        <option t-att-value="s.id" t-att-selected="s.id == ('state_id' in checkout and country and checkout['state_id'] != '' and int(checkout['state_id']))">
+                                                                            <t t-esc="s.name" />
+                                                                        </option>
+                                                                    </t>
+                                                                    
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="partner_id" t-att-value="partner_id or '0'" />
+                                            <input type="submit" name="submitted"  value="Register" class="pull-right btn btn-primary submit_register" />
+                                            </form>
+                                        </div>
+                                    </div>    
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a href="#payment-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle collapsed" aria-expanded="false">Step 3: Payment Method <i class="fa fa-caret-down"></i></a>
+                                        </h4>
+                                    </div>
+                                    <div id="payment-method" class="panel-collapse collapse " aria-expanded="false" style="height: 0px;" >
+                                        <div class="panel-body oe_cart">
+                                            <div class="col-sm-12">
+                                                <t t-foreach="payment_values.get('errors', [])" t-as="error">
+                                                    <div class="alert alert-danger" t-if="error">
+                                                        <h4>
+                                                            <t t-esc="error[0]" />
+                                                        </h4>
+                                                        <t t-esc="error[1]" />
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            <div class="js_payment mb64 row " t-if="payment_values.get('acquirers') and payment_values.get('website_sale_order')" id="payment_method">
+                                                <div class="col-sm-12">
+                                                    <p>Please select the preferred payment method to use on this order.</p>
+                                                    <ul class="list-unstyled">
+                                                    <t t-if="payment_values" t-foreach="payment_values.get('acquirers', [])" t-as="acquirer">
+                                                        <li>
+                                                            <label t-if="acquirer.button">
+                                                                    <input t-att-value="acquirer.id" type="radio" name="acquirer" />
+                                                                    <span t-field="acquirer.image_small" t-att-title="acquirer.name" t-field-options='{"widget": "image", "style":"max-width: 60px; display: inline-block"}'/>
+                                                                    <span t-field="acquirer.name" />
+                                                                    <span t-if="acquirer.fees_active">(processing fees apply)</span>
+                                                            </label>
+                                                        </li>
+                                                        
+                                                    </t>
+                                                    
+                                                    <li t-if="payment_values.get('tokens')">
+                                                        <label>
+                                                            <input type="radio" name="acquirer" />
+                                                            <span class='fa fa-2x fa-credit-card'/>
+                                                                Saved Cards
+                                                        </label>
+
+                                                        <div class="list-group">
+                                                            <t t-foreach="payment_values.get('tokens', [])" t-as='token'>
+                                                                <a class="list-group-item btn_payment_token" t-att-data-acquirer="token.acquirer_id.id" t-att-data-token='token.id'>
+                                                                    <span class="js_radio fa fa-circle-o"></span>&amp;nbsp;
+                                                                    <t t-esc="token.name" />
+                                                                    <t t-if="len(set(tokens.mapped('acquirer_id')))>1">
+                                                                            (<t t-esc='token.acquirer_id.name'/>)
+                                                                    </t>
+                                                                    <span t-if="token.acquirer_id.fees_active">(processing fees apply)</span>
+                                                                    </a>
+                                                            </t>
+                                                        </div>
+                                                    </li>
+                                                    
+                                                    </ul>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                <p><strong>Add Comments About Your Order</strong></p>
+                                                <p><textarea name="comment" rows="46" class=""></textarea></p>
+                                                </div>
+                                            
+                                                <div class="col-sm-12">
+                                                    <t t-foreach="payment_values.get('acquirers', [])" t-as="acquirer" id="acquirers_list">
+                                                        <div t-att-data-id="acquirer.id" class="oe_sale_acquirer_button hidden pull-right">
+                                                            <input type="checkbox" name="agree" value="1" id="agree1"/>
+                                                            I have read and agree to the 
+                                                            <a href="/terms_conditions" class="agree_terms" target="_blank"><b>Terms &amp; Conditions</b></a>
+                                                            <div t-raw="acquirer.button" class="pull-right" />
+                                                            <div class="token_hide">
+                                                                <div t-if="acquirer.save_token == 'ask'">
+                                                                    <input type="checkbox" name="odoo_save_token"/>
+                                                                    <label for="odoo_save_token">Save my payment data</label>
+                                                                </div>
+                                                                <div class="pre_msg" t-field="acquirer.pre_msg" />
+                                                            </div>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="js_payment row" id="payment_method" t-if="not payment_values.get('website_sale_order')">
+                                                <div class="col-sm-12">
+                                                    <form target="_self" action="/shop/payment/validate" method="post" class="pull-right">
+                                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                        I have read and agree to the 
+                                                        <a href="/terms_conditions" class="agree_terms" target="_blank"><b>Terms &amp; Conditions</b></a>
+
+                                                        <input type="checkbox" name="agree" value="1" id="agree1"/>
+                                                        
+                                                        <a class="btn btn-primary a-submit">
+                                                            <span t-if="order.amount_total &gt; 0">Pay Now <span class="fa fa-long-arrow-right"></span></span>
+                                                            <span t-if="order.amount_total == 0">Confirm Order <span class="fa fa-long-arrow-right"></span></span>
+                                                        </a>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            
+                                           
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        	</div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> 
+		</xpath>
+	</template>
+</odoo>

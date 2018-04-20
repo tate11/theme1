@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="edit_address" name="My Account" priority="200">
+		<t t-call="website.layout">
+            <div id="wrap">
+            	<section class="edit_add_main_wrapper">
+		            <div class="container oe_website_sale">
+		                <div class="row">
+		                	<div class="col-md-12">
+				                <ul class="breadcrumb" style="margin-top:48px;">
+				                    <li><a href="/"><i class="fa fa-home"></i></a></li>
+				                    <li><a href="/account_information">Address Book</a></li>
+				                    <li><span>Edit Address</span></li>
+				                </ul>
+				            </div>
+				            <div class="col-md-12">
+				            	<div class="edit_add_inner">
+				            		<h2>Edit Address</h2>
+				            		<div class="row">
+		                            <form name="/address_book" method="post" class="checkout_autoformat edit_add_form">
+		                                <div t-attf-class="form-group #{error.get('name') and 'has-error' or ''} div_name form-group required">
+		                                    <label class="control-label col-sm-2" for="name">First Name</label>
+		                                    <div class="col-sm-10">
+		                                    	<input type="text" name="name" class="form-control" t-att-value="'name' in checkout and checkout['name']" />
+		                                    </div>
+		                                </div>
+		                                <div class="clearfix" />
+		                                <div t-attf-class="form-group #{error.get('last_name') and 'has-error' or ''} div_name form-group required">
+		                                    <label class="control-label col-sm-2" for="name">Last Name</label>
+		                                    <div class="col-sm-10">
+		                                    	<input type="text" name="last_name" class="form-control" t-att-value="'last_name' in checkout and checkout['last_name']" />
+		                                    </div>
+		                                </div>
+		                                <div class="clearfix" />
+		                                <!--t t-if="mode[1] == 'billing'">
+		                                    <div t-attf-class="form-group #{error.get('email') and 'has-error' or ''}" id="div_email">
+		                                        <label class="control-label col-sm-2" for="email">Email</label>
+		                                        <div class="col-sm-10">
+		                                        	<input type="email" name="email" class="form-control" t-att-value="'email' in checkout and checkout['email']" />
+		                                        </div>
+		                                    </div>
+		                                </t-->
+	                                    <div t-attf-class="form-group #{error.get('company_name') and 'has-error' or ''} form-group required">
+	                                        <label class="control-label label-optional col-sm-2" for="company_name">Company Name</label>
+	                                        <div class="col-sm-10">
+	                                        	<input type="text" name="company_name" class="form-control" t-att-value="'company_name' in checkout and checkout['company_name']" />
+	                                        </div>
+	                                    </div>
+		                                <div class="clearfix" />
+		                                <div t-attf-class="form-group #{error.get('phone') and 'has-error' or ''} form-group required" id="div_phone">
+		                                    <label class="control-label col-sm-2" for="phone">Phone</label>
+		                                    <div class="col-sm-10">
+		                                    	<input type="tel" name="phone" class="form-control" t-att-value="'phone' in checkout and checkout['phone']" />
+		                                    </div>
+		                                </div>
+		                                <div class="clearfix" />
+		                                <div t-attf-class="form-group #{error.get('street') and 'has-error' or ''} div_street form-group required">
+		                                    <label class="control-label col-sm-2" for="street">Address1 <span class="hidden-xs"></span></label>
+		                                    <div class="col-sm-10">
+		                                    	<input type="text" name="street" class="form-control" t-att-value="'street' in checkout and checkout['street']" />
+		                                    </div>
+		                                </div>
+		                                <div class="clearfix" />
+		                                <div t-attf-class="form-group #{error.get('street2') and 'has-error' or ''} div_street2 form-group required">
+		                                    <label class="control-label col-sm-2" for="street2">Address2 <span class="hidden-xs"></span></label>
+		                                    <div class="col-sm-10">
+		                                    	<input type="text" name="street2" class="form-control" t-att-value="'street2' in checkout and checkout['street2']" />
+		                                    </div>
+		                                </div>
+		                                <div class="clearfix" />
+		                                <t t-set='zip_city' t-value='country and [x for x in country.get_address_fields() if x in ["zip", "city"]] or ["city", "zip"]'/>
+		                                <div class="clearfix" />
+		                                <t t-if="'zip' in zip_city and zip_city.index('zip') &gt; zip_city.index('city')">
+		                                    <div t-attf-class="form-group #{error.get('zip') and 'has-error' or ''} div_zip form-group required">
+		                                        <label class="control-label label-optional col-sm-2" for="zip">Post Code</label>
+		                                        <div class="col-sm-10">
+		                                        	<input type="text" name="zip" class="form-control" t-att-value="'zip' in checkout and checkout['zip']" />
+		                                        </div>
+		                                    </div>
+		                                </t>
+		                                <div class="clearfix" />
+		                                <div t-attf-class="form-group #{error.get('city') and 'has-error' or ''} div_city form-group required">
+		                                    <label class="control-label col-sm-2" for="city">City</label>
+		                                    <div class="col-sm-10">
+		                                    	<input type="text" name="city" class="form-control" t-att-value="'city' in checkout and checkout['city']" />
+		                                    </div>
+		                                </div>
+		                                <div class="clearfix" />
+		                                <div t-attf-class="form-group #{error.get('country_id') and 'has-error' or ''} div_country form-group required">
+		                                    <label class="control-label col-sm-2" for="country_id">Country</label>
+		                                    <div class="col-sm-10">
+				                                <select id="country_id" name="country_id" class="form-control">
+				                                    <option value="">Country...</option>
+				                                    <t t-foreach="countries" t-as="c">
+				                                        <option t-att-value="c.id" t-att-selected="c.id == (country and country.id or -1)">
+				                                            <t t-esc="c.name" />
+				                                        </option>
+				                                    </t>
+				                                </select>
+				                           	</div>
+		                                </div>
+		                                <div class="clearfix" />
+		                                <div t-attf-class="form-group #{error.get('state_id') and 'has-error' or ''} div_state form-group required" t-att-style="(not country or not country.state_ids) and 'display: none'">
+		                                    <label class="control-label col-sm-2" for="state_id">Region / State</label>
+		                                    <div class="col-sm-10">
+				                                <select name="state_id" class="form-control" data-init="1">
+				                                    <option value="">Region / State...</option>
+				                                    <t t-foreach="country and country.state_ids or []" t-as="s">
+				                                        <option t-att-value="s.id" t-att-selected="s.id == ('state_id' in checkout and country and checkout['state_id'] != '' and int(checkout['state_id']))">
+				                                            <t t-esc="s.name" />
+				                                        </option>
+				                                    </t>
+				                                </select>
+				                        	</div>
+		                                </div>
+		                                <div class="clearfix"></div>
+		                                <div class="form-group">
+		                                    <label class="col-sm-2 control-label">Default Address</label>
+		                                    <div class="col-sm-10 dft_address">
+		                                        <input type="checkbox" class="radio" value="1" name="fooby[1][]"/>Yes
+		                                        <input type="checkbox" class="radio" value="1" name="fooby[1][]"/>No
+		                                    </div>
+		                                </div>
+
+		                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+		                                <input type="hidden" name="submitted" value="1" />
+		                                <input type="hidden" name="partner_id" t-att-value="partner_id or '0'" />
+		                                <input type="hidden" name="callback" t-att-value="callback" />
+		                                <!-- Example -->
+		                                <input type="hidden" name="field_required" t-att-value="mode[1] == 'billing' and 'name' or ''" />
+
+		                                <div class="clearfix"/>
+		                                <div class="buttons">
+				                            <div class="pull-left" style="margin-top: 50px;">
+				                                <a href="/address_book" class="btn-default">Back</a>
+				                            </div>
+				                            <div class="pull-right" style="margin-bottom: 40px;">
+				                            	<a class="btn btn-primary pull-right a-submit a-submit-disable a-submit-loading">Continue</a>
+				                            </div>
+				                        </div>
+		                            </form>
+		                        </div>
+				            	</div>
+				            </div>
+		                </div>
+		            </div>
+		    	</section>
+            </div>
+        </t>
+	</template>
+</odoo>

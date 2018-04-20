@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_accessories,access_accessories,model_accessories,,1,1,1,0
+access_latest_product,access_latest_product,model_latest_product,,1,1,1,0
+access_product_wishlist,access_product_wishlist,model_product_wishlist,,1,1,1,0

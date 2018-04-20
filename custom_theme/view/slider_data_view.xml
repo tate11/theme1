@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_slider_data_tree" model="ir.ui.view">
+            <field name="name">slider.data.tree</field>
+            <field name="model">slider.data</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+            <tree string="Slider Data">
+                <field name="image"/>
+                <field name="body_text"/>
+                <field name="button_name"/>
+                <field name="button_link"/>
+            </tree>
+            </field>
+        </record>
+        
+        <record id="view_slider_data_form" model="ir.ui.view">
+            <field name="name">slider.data.form</field>
+            <field name="model">slider.data</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Slider Data">
+                    <group>
+                        <group>
+                            <field name="image" required="1" widget="image"/>
+                            <field name="body_text"/>
+                        </group>
+                        <group>
+                            <field name="button_name"/>
+                            <field name="button_link"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="act_open_slider_data_view">
+            <field name="name">Slider Data</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">slider.data</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+        
+        <record model="ir.actions.act_window.view" id="act_open_slider_data_view_form">
+            <field name="act_window_id" ref="act_open_slider_data_view"/>
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_slider_data_form"/>
+        </record>
+        
+        <record model="ir.actions.act_window.view" id="act_open_slider_data_view_tree">
+            <field name="act_window_id" ref="act_open_slider_data_view"/>
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_slider_data_tree"/>
+        </record>
+
+        <menuitem id="web_info" parent="website.menu_website_configuration" name="Website Information"/>
+        <menuitem id="menu_slider_data"
+            parent="web_info"
+            sequence="1"
+            action="act_open_slider_data_view"/>
+    </data>
+</odoo>

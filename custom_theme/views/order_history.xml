@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="order_history" name="My Account" priority="200">
+		<t t-call="website.layout">
+			<div id="wrap">
+				<section class="odr_history_main_wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="breadcrumb" style="margin-top:45px;">
+                                    <li><a href="/"><i class="fa fa-home"></i></a></li>
+                                    <li><a href="/account_information">Account</a></li>
+                                    <li><span>Order History</span></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="odr_history_inner">
+                                    <h1><i class="fa fa-shopping-cart"></i>Order History</h1>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <td class="text-right">Order ID</td>
+                                                    <td class="text-left">Customer</td>
+                                                    <td class="text-right">No. of Products</td>
+                                                    <td class="text-left">Status</td>
+                                                    <td class="text-right">Total</td>
+                                                    <td class="text-left">Date Added</td>
+                                                    <td></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            	<t t-foreach="orders" t-as="order">
+		                                            <tr>
+		                                                <td class="text-right"><a t-attf-href="/my/orders/{{order.id}}?{{keep_query()}}"><t t-esc="order.name"/></a></td>
+		                                                <td class="text-left"><span t-field="order.partner_id"/></td>
+		                                                <td class="text-right"><span t-esc="len(order.order_line)"/></td>
+		                                                <td class="text-left"><span t-field="order.state"/></td>
+		                                                <td class="text-right"><span t-field="order.amount_total"/></td>
+		                                                <td class="text-left"><span t-field="order.date_order"/></td>
+		                                                <td class="text-right">
+		                                                    <a href="#" data-toggle="tooltip" class="eye_btn_icon btn-icon"><i class="fa fa-eye"></i></a>
+		                                                </td>
+		                                            </tr>
+		                                    	</t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="buttons clearfix">
+                                        <div class="pull-right" style="margin-bottom:40px;"><a href="#" class="btn btn-primary">Continue</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+		    </div>
+		</t>
+	</template>
+</odoo>

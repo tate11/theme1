@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="my_account" name="My Account" priority="200">
+		<t t-call="website.layout">
+			<div id="wrap">
+				<section class="account_main_wrapper">
+		            <div class="container">
+		                <div class="row">
+		                    <div class="col-md-12">
+		                        <ul class="breadcrumb" style="margin-top:45px;">
+		                            <li><a href="/"><i class="fa fa-home"></i></a></li>
+		                            <li><span>Account</span></li>
+		                        </ul>
+		                    </div>
+		                    <div class="col-md-6 account_inner">
+		                        <div class="account_left">
+		                            <h3><i class="fa fa-user"></i>My Account</h3>
+		                            <ul class="list-unstyled">
+		                                <li>
+		                                    <a href="/edit_account_information"><i class="fa fa-angle-right"></i>Edit your account information</a>
+		                                </li>
+		                                <li>
+		                                    <a href="/address_book"><i class="fa fa-angle-right"></i>Modify your address book entries</a>
+		                                </li>
+		                                <li>
+		                                    <a href="/shop/wishlist"><i class="fa fa-angle-right"></i>Modify your wish list</a>
+		                                </li>
+		                            </ul>
+		                        </div>
+		                    </div>
+		                    <div class="col-md-6 account_inner">
+		                        <div class="account_right">
+		                            <h3><i class="fa fa-clipboard"></i>My Orders</h3>
+		                            <ul class="list-unstyled">
+		                                <li>
+		                                    <a href="/order_history"><i class="fa fa-angle-right"></i>View your order history</a>
+		                                </li>
+		                                <li>
+		                                    <a href="#"><i class="fa fa-angle-right"></i>View your return requests</a>
+		                                </li>
+		                            </ul>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        </section>
+		    </div>
+		</t>
+	</template>
+</odoo>

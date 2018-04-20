@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="wishlist_wishlist_template">
+		<t t-call="website.layout">
+			<div class="mask_cover"></div>
+			<div class="main-div-W100 wishlist-main">
+				<div class="oe_structure"></div>
+				<div class="main-div-maxW">
+					
+					<form action="/shop/wishlist/update" method="post">
+						<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+						<t t-if="object">
+							<div class="col-md-12">
+				                <ul class="breadcrumb" style="margin-top: 45px;">
+				                    <li><a href="/"><i class="fa fa-home"></i></a></li>
+				                    <li><a href="/my/home">Account</a></li>
+				                    <li><span>My Wish list</span></li>
+				                </ul>
+				            </div>
+				            <div class="col-md-12">
+								<div class="wish_list_inner">
+									<div class="clear-all-div">
+										<h1 class="no_border_line"><i class="fa fa-heart"></i>My Wish List</h1>
+										<a class="clear-all-wishlist">( Clear Wishlist )</a>
+									</div>
+									<div class="table-responsive">
+				                        <table class="table table-bordered table-hover">
+				                            <thead>
+				                                <tr>
+				                                    <td class="text-center">Image</td>
+				                                    <td class="text-left">Product Name</td>
+				                                    <td class="text-left">Model</td>
+				                                    <td class="text-right">Stock</td>
+				                                    <td class="text-right">Unit Price</td>
+				                                    <td class="text-right"></td>
+				                                    <td></td>
+				                                </tr>
+				                            </thead>
+				                            <tbody>
+				                            	<t t-foreach="object" t-as="p">
+				                            		<div t-att-data-id="'%s' % p.product_id.id" class="product">
+				                            			<div t-att-data-id="'%s' % p.product_id.id" class="undo_opacity">
+				                            				<tr class="wishlist-img-div">
+				                            					<td>
+				                            						<img class="wishlist-img" t-att-src="'data:image/png;base64,%s' % p.product_id.image_small"></img>
+				                            					</td>
+				                            					<td>
+				                            						<a href='/' class="wishlist-product-name" t-field="p.product_id.name" id="productname"/>
+				                            					</td>
+				                            					<td></td>
+				                            					<td>In Stock</td>
+				                            					<td class="wishlist_price">
+				                            						<t t-if="(compute_currency(p.product_id.lst_price) - p.product_id.website_price ) &gt; 0.01  and website.get_current_pricelist().discount_policy=='with_discount'">
+																		<del class="text-danger mr8 strike-through strike-price" style="white-space: nowrap;" t-esc="compute_currency(p.product_id.website_public_price)" t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}" />
+																	</t>
+																	<h4>
+																		<t t-if="(compute_currency(p.product_id.lst_price) -p.product_id.website_price ) &gt; 0.01  and website.get_current_pricelist().discount_policy=='without_discount'">
+																		   
+																			<del class="text-danger mr8 wishlist-price-p strike-price" style="white-space: nowrap;" t-esc="compute_currency(p.product_id.website_public_price)" t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}" />
+																		</t>
+																		 <span class="text-danger oe_default_price" style="text-decoration: line-through; white-space: nowrap;"
+																		t-esc="compute_currency(p.product_id.website_public_price)" t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}" t-att-style="'text-decoration: line-through; white-space: nowrap; ' + '' if (compute_currency(p.product_id.lst_price) - p.product_id.website_price) &gt; 0.01 and website.get_current_pricelist().discount_policy == 'without_discount' else 'display: none;'" />
+																	  
+																		<span class="p-orignal-price" t-esc="p.product_id.website_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+																		 <p class="oe_price wishlist-price-p" style="white-space: nowrap;" t-esc="p.product_id.website_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+																		<span itemprop="price" style="display:none;" t-esc="p.product_id.website_price" />
+																		<span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
+																	</h4>
+				                            					</td>
+						                    					<td class="text-center">
+						                    						<input name="product_id" t-att-value="p.product_id.product_variant_id.id" type="hidden" />
+						                    						<a class="a-submit-data">
+																		<button class="p_add_to_cart" type="button" data-toggle="tooltip" data-original-title="Add to Cart">
+																			<span>Add to Cart</span>
+																		</button>
+																 	</a>
+												                </td>
+										                        <td class="wishlist-product-cart-div text-center" style="width: 0">
+																	<a t-att-data-id="'%s' % p.product_id.id" class="remove_btn_icon btn-icon remove2wish" t-att-data-name="'%s' % p.product_id.name" data-toggle="tooltip" data-original-title="Remove">
+									                                	<i class="fa fa-trash-o" aria-hidden="true"></i>
+									                            	</a>
+																</td>
+				                            				</tr>
+				                            			</div>
+				                            		</div>
+				                            	</t>
+				                            </tbody>
+				                        </table>
+				                    </div>
+				                </div>
+		                        <div class="cont_buttons clearfix">
+		                            <div class="pull-right">
+		                                <a href="#" class="btn btn-primary">Continue</a>
+		                            </div>
+		                        </div>
+		                    </div>
+						</t>
+						<t t-if="not object">
+							<div class="empty-wishlist-div">
+								<p class="empty-wishlist-text">Your wishlist is empty!</p>
+							</div>
+						</t>
+					</form>
+				</div>
+			</div>
+		</t>
+	</template>
+</odoo>

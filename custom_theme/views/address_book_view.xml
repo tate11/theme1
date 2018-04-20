@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="address_book" name="My Account" priority="200">
+		<t t-call="website.layout">
+            <div id="wrap">
+            	<section class="add_book_main_wrapper">
+		            <div class="container oe_website_sale">
+		                <t t-set="same_shipping" t-value="bool(order.partner_shipping_id==order.partner_id or only_services)" />
+		                <div class="row">
+		                	<div class="col-md-12">
+				                <ul class="breadcrumb" style="margin-top:48px;">
+				                    <li><a href="/"><i class="fa fa-home"></i></a></li>
+				                    <li><a href="/account_information">Account</a></li>
+				                    <li><span>Address Book</span></li>
+				                </ul>
+				            </div>
+				            <div class="col-md-12">
+				            	<div class="add_book_inner">
+				            		<h2>Address Book Entries</h2>
+				            		<div class="table-responsive">
+				            			<table class="table table-bordered table-hover">
+				            				<t t-foreach="shippings" t-as="ship">
+						        				<tbody>
+						        					<tr class="oe_cart">
+						        						<td>
+						        							<div class="one_kanban">
+						        								<t t-call="custom_theme.custom_address">
+															        <t t-set='selected' t-value="1"/>
+															        <t t-set='readonly' t-value="1"/>
+															        <t t-set="actual_partner" t-value="order.partner_id" />
+													                <t t-set='contact' t-value="ship"/>
+													                <t t-set='selected' t-value="order.partner_shipping_id==ship"/>
+													                <t t-set='readonly' t-value="bool(len(shippings)==1)"/>
+													                <t t-set='edit_billing' t-value="bool(ship==order.partner_id)"/>
+													        	</t>
+														    </div>
+						        						</td>
+						        						<td class="text-right">
+						        							<div class="one_kanban">
+								                                <form action="/address_book" method="POST" class='hide'>
+								                                	<t t-set='contact' t-value="order.partner_id"/>
+								                                	<t t-set='contact' t-value="ship"/>
+																	<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+																	<input type="hidden" name="partner_id" t-att-value="contact.id"/>
+																	<t t-if='edit_billing'>
+																		<input type="hidden" name="callback" value="/address_book?use_billing" />
+																	</t>
+																	<input type='submit'/>
+																</form>
+																<a t-if="not actual_partner or (ship.id in actual_partner.ids + actual_partner.child_ids.ids)" class='btn btn-link js_edit_address no-decoration btn btn-default'>Edit</a>
+																<input type="hidden" name="ship_data" t-att-value="ship.id"/>
+								                                <a href="#" class="btn btn-default partner_remove no-decoration">Delete</a>
+								                            </div>
+						                                </td>
+						        					</tr>
+						        				</tbody>
+						        			 </t>
+				            			</table>
+				            		</div>
+				            		<div class="buttons">
+				                        <div class="pull-left" style="margin-bottom:40px;">
+				                            <a href="/account_information" class="btn-default">Back</a>
+				                        </div>
+				                        <div class="pull-right">
+						                    <form action="/edit_address" method="post" class=''>
+		                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+		                                        <a class='a-submit btn-primary'>
+		                                            <span>New address</span>
+		                                        </a>
+		                                    </form>
+		                                </div>
+				                    </div>
+				            	</div>
+				            </div>
+		                </div>
+		            </div>
+		    	</section>
+            </div>
+        </t>
+	</template>
+	
+	<template id="custom_address" name="Custom Address" priority="200">
+		<div t-att-class="' %s' % (selected or 'js_change_shipping')">
+                <div class='panel-body' style='min-height: 130px;'>
+                    <t t-esc="contact" t-options="dict(widget='contact', fields=['name', 'address'], no_marker=True)"/>
+                </div>
+                <!--div class='panel-footer' t-if='not readonly'>
+                    <span class='btn-ship' t-att-style="'' if selected else 'display:none;'">
+                        <a class="btn btn-block btn-primary">
+                            <i class='fa fa-check'></i> Ship to this address
+                        </a>
+                    </span>
+                    <span class='btn-ship' t-att-style="'' if not selected else 'display:none;'">
+                        <a class="btn btn-block btn-default">
+                            Select this address
+                        </a>
+                    </span>
+                </div-->
+            </div>
+	</template>
+	
+	<!--template id="custom_kanban" inherit_id="website_sale.address_kanban" priority="200">
+		<xpath expr="//a" position="attributes">
+			<attribute name="class">hidden</attribute>
+		</xpath>
+		<xpath expr="//div" position="replace">
+			<div t-att-class="'%s' % (selected or 'js_change_shipping')">
+                <div class='panel-body' style='min-height: 130px;'>
+                    <t t-esc="contact" t-options="dict(widget='contact', fields=['name', 'address'], no_marker=True)"/>
+                </div>
+                <div class='panel-footer' t-if='not readonly'>
+                    <span class='btn-ship' t-att-style="'' if selected else 'display:none;'">
+                        <a class="btn btn-block btn-primary">
+                            <i class='fa fa-check'></i> Ship to this address
+                        </a>
+                    </span>
+                    <span class='btn-ship' t-att-style="'' if not selected else 'display:none;'">
+                        <a class="btn btn-block btn-default">
+                            Select this address
+                        </a>
+                    </span>
+                </div>
+            </div>
+		</xpath>
+	</template-->
+	
+</odoo>

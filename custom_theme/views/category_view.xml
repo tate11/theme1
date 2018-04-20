@@ -1,0 +1,54 @@
+<odoo>
+	<data>
+		<template id="products_category_wise" name="Categories" priority="200">
+			<t t-call="website.layout">
+				<div id="wrap">
+					<section class="accessories_main_wrapper">
+						<t t-call="custom_theme.quick_view"/>
+						<div class="container oe_website_sale">
+							<div class="row">
+								<div class="col-md-12">
+						            <ul class="breadcrumb" style="margin-top: 45px;">
+						                <li><a href="/"><i class="fa fa-home"></i></a></li>
+						                <li><span>Categories</span></li>
+						            </ul>
+						        </div>
+							</div>
+						</div>
+					</section>
+					<section class="multi_product_wrapper">
+						<div class="container">
+							<div class="row">
+								<div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="left_col_inner">
+                                        <div class="left_submenu1">
+                                            <h3>Categories</h3>
+                                            <ul class="nav nav-pills nav-stacked mt16">
+                                                
+                                                <t t-foreach="categories" t-as="c">
+                                                    <t t-call="custom_theme.category_product_search"/>
+                                                </t>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<t t-if="category">
+										<h3><t t-esc="category.name"/></h3>
+									</t>
+									<div class="product_grid_inner">
+										<input type="text" name="view_type" class="view_type hidden"/>
+										<t t-call="custom_theme.product_home"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="products_pager">
+				            <t t-call="website.pager" />
+				        </div>
+					</section>
+				</div>
+			</t>
+		</template>
+	</data>
+</odoo>

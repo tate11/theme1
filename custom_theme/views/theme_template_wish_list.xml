@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="wishlist_wishlist_product">
+		<div class="wishlist_image">
+			<img class="img img-responsive cart_view_details_product_image"
+				t-att-src="'data:image/png;base64,%s'% product.image_small" />
+		</div>
+		<div class="product_name_label">
+			<a itemprop="name" t-field="product.name" />
+			<span> Added into wishlist</span>
+		</div>
+	</template>
+</odoo>

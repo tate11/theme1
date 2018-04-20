@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="product_data_custom_items" inherit_id="website_sale.product" priority="200">
+		<xpath expr="//div/section/div/div/ol/li[1]" position="replace">
+			<li>
+                <a href="/"><i class="fa fa-home"></i></a>
+            </li>
+		</xpath>
+		<xpath expr="//div[2][@class='row']" position="replace">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="product_preview">
+                                <!--ul class="preview_thumbnail nav nav-tabs">
+                                    <li class="active">
+                                        <a data-target="#pic-1" data-toggle="tab">
+                                            <img width="140" height="140" src="/custom_theme/static/src/img/p1-140x140.png" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-target="#pic-2" data-toggle="tab">
+                                            <img width="140" height="140" src="/custom_theme/static/src/img/p2-140x140.png" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-target="#pic-3" data-toggle="tab">
+                                            <img width="140" height="140" src="/custom_theme/static/src/img/p3-140x140.png" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-target="#pic-4" data-toggle="tab">
+                                            <img width="140" height="140" src="/custom_theme/static/src/img/p4-140x140.png" />
+                                        </a>
+                                    </li>
+                                </ul-->
+                            </div>
+						</div>
+						<div class="col-md-9">
+							<div class="preview_pic tab-content">
+								<span itemprop="image" t-attf-content="{{request.httprequest.url_root}}web/image/product.template/{{product.id}}/image" t-field="product.image" t-options="{'widget': 'image', 'class': 'product_detail_img', 'alt-field': 'name', 'zoom': 'image'}" groups="!website_sale.group_website_multi_image"/>
+								<t groups="website_sale.group_website_multi_image">
+                                <t t-set="variant_img" t-value="product.product_variant_id.image_variant"/>
+                                <t t-set="image_ids"  t-value="product.product_image_ids"/>
+		                            <div id="o-carousel-product" class="carousel slide" data-ride="carousel" data-interval="0">
+		                              <div class="carousel-outer">
+		                                <div class="carousel-inner">
+		                                    <div t-if="variant_img" class="item active" itemprop="image" t-field="product.product_variant_id.image" t-options="{'widget': 'image', 'class': 'product_detail_img js_variant_img', 'alt-field': 'name', 'zoom': 'image', 'unique': product['__last_update'] + (product.product_variant_id['__last_update'] or '')}"/>
+		                                    <div t-attf-class="item#{'' if variant_img else ' active'}" itemprop="image" t-field="product.image" t-options="{'widget': 'image', 'class': 'product_detail_img', 'alt-field': 'name', 'zoom': 'image', 'unique': product['__last_update']}"/>
+		                                    <t t-if="len(image_ids)" t-foreach="image_ids" t-as="pimg">
+		                                        <div class="item" t-field="pimg.image" t-options='{"widget": "image", "class": "product_detail_img", "alt-field": "name", "zoom": "image" }'/>
+		                                    </t>
+		                                </div>
+
+		                                <t t-if="len(image_ids) or variant_img">
+		                                    <a class="carousel-control left" href="#o-carousel-product" role="button" data-slide="prev" >
+		                                        <span class="fa fa-chevron-left" aria-hidden="true"/>
+		                                        <span class="sr-only">Previous</span>
+		                                    </a>
+		                                    <a class="carousel-control right" href="#o-carousel-product" role="button" data-slide="next">
+		                                        <span class="fa fa-chevron-right" aria-hidden="true"/>
+		                                        <span class="sr-only">Next</span>
+		                                    </a>
+		                                </t>
+		                              </div>
+
+		                              <ol class="carousel-indicators" t-if="len(image_ids) or variant_img">
+		                                <li t-if="variant_img" data-target="#o-carousel-product" data-slide-to="0" class="active">
+		                                    <img class="img img-responsive js_variant_img_small" t-attf-src="/website/image/product.product/{{product.product_variant_id.id}}/image/90x90" t-att-alt="product.name"/>
+		                                </li>
+		                                <li data-target="#o-carousel-product" t-att-data-slide-to="1 if variant_img else 0" t-att-class="'' if variant_img else 'active'">
+		                                    <img class="img img-responsive" t-attf-src="/website/image/product.template/{{product.id}}/image/90x90" t-att-alt="product.name"/>
+		                                </li>
+		                                <t t-if="len(image_ids)" t-foreach="image_ids" t-as="pimg">
+		                                    <li data-target="#o-carousel-product" t-att-data-slide-to="pimg_index + (variant_img and 2 or 1)">
+		                                        <img class="img img-responsive" t-attf-src="/website/image/product.image/{{pimg.id}}/image/90x90" t-att-alt="pimg.name"/>
+		                                    </li>
+		                                </t>
+		                              </ol>
+		                            </div>
+		                        </t>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 product_page_right">
+					<div class="p_general_info">
+						<h2 class="product_title" itemprop="name" t-field="product.name">Product Name</h2>
+						<span itemprop="url" style="display:none;" t-esc="'%sshop/product/%s' % (request.httprequest.url_root, slug(product))"/>
+						<t t-set="attribute_value_ids" t-value="get_attribute_value_ids(product)"/>
+                        <form action="/shop/cart_custom/update_custom" class="js_add_cart_variants" t-att-data-attribute_value_ids="attribute_value_ids" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                            <div class="js_product" t-if="product.product_variant_ids">
+                                <t t-placeholder="select">
+                                    <input type="hidden" class="product_id" name="product_id" t-att-value="product.product_variant_id.id if len(product.product_variant_ids) == 1 else '0'" />
+                                    <t t-call="website_sale.variants">
+                                        <t t-set="ul_class" t-value="'nav-stacked'" />
+                                    </t>
+                                </t>
+                                <p t-if="len(product.product_variant_ids) &gt; 1" class="css_not_available_msg bg-danger" style="padding: 15px;">Product not available</p>
+                                <div class="css_quantity input-group oe_website_spinner" contenteditable="false">
+									<a t-attf-href="#" class="mb8 input-group-addon js_add_cart_json">
+										<i class="fa fa-minus"></i>
+									</a>
+									<input type="text" class="form-control quantity" data-min="1" name="add_qty" value="1"/>
+									<a t-attf-href="#" class="mb8 input-group-addon float_left js_add_cart_json">
+										<i class="fa fa-plus"></i>
+									</a>
+								</div>
+								<t t-call="website_sale.product_price" />
+
+                                <a id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#">Add to Cart</a>
+                                <a class="btn btn-default btn-lg mt8 o_add_wishlist_dyn" title="Add to Wishlist" t-att-data-product-product-id="product.product_variant_ids[0].id" data-action="o_wishlist"><span class="fa fa-heart"></span></a>
+                            </div>
+                            <div class="p_social_icon">
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-google-plus-square"></i></a>
+                            </div>
+                        </form>
+                        <hr t-if="product.availability != 'empty'"/>
+                            <div t-if="product.availability == 'in_stock'" class="alert alert-success">
+                                <span class="fa fa-check" />
+                                <span>In Stock</span>
+                            </div>
+                            <div t-if="product.availability == 'warning'" class="alert alert-warning">
+                                <span class="fa fa-warning" />
+                                <span t-field="product.availability_warning" />
+                            </div>
+                            <!--hr t-if="product.description_sale" />
+                            <div>
+                                <p t-field="product.description_sale" class="text-muted" />
+                            </div-->
+					</div>
+				</div>
+			</div>
+		</xpath>
+		<!--div itemprop="description" position="replace"/-->
+	</template>	
+</odoo>

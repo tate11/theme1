@@ -1,0 +1,142 @@
+<odoo>
+	<template id="custom_confirmation" inherit_id="website_sale.confirmation">
+		<xpath expr="//div[@id='wrap']" position="replace">
+			<section class="success_order_main_wrapper">
+            <div class="container oe_website_sale">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="breadcrumb" style="margin-top: 45px;">
+                            <li><a href="/"><i class="fa fa-home"></i></a></li>
+                            <li><a href="/shop/cart">Shopping Cart</a></li>
+                            <li><a href="/shop/checkout">Checkout</a></li>
+                            <li><span>Success</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="#">
+                        	<h1>Thank you for your order</h1>
+                        	<h3 class="mb32">Order <em t-field="order.name" /></h3>  
+                        	<a class="btn btn-primary pull-right" href="/shop/print" target="_blank"><i class="fa fa-print"></i> Print</a>
+                        	<div class="oe_website_sale_tx_status" t-att-data-order-id="order.id"></div>
+                        	<p>You can view your order history by going to the <a href="/my/home">my account</a> page and by clicking on <a href="/my/orders">history</a>.</p>
+			            </div>
+			        </div>
+		            <div class="col-md-12">
+	                    <div class="oe_cart chkt_custom_panel">
+	                            <h3 class="mt32 text-left">
+	                                  <strong>Order Details:</strong>
+	                            </h3>
+	                            <div class="table-responsive">
+	                            	<table class="table table-bordered table-hover">
+	                                    <thead>
+	                                        <tr>
+	                                            	<th class="text-left">Product Name</th>
+	                                                <th class="text-left">Model</th>
+	                                                <th class="text-right">Quantity
+		                                            </th>
+	                                                <th class="text-right">Unit Price</th>
+	                                                <th class="text-right">Total</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                      <tr t-foreach="order.order_line" t-as="line">
+	                                          <td>
+	                                              <div>
+	                                                  <a t-attf-href="/shop/product/#{ slug(line.product_id.product_tmpl_id) }">
+	                                                      <strong t-esc="line.product_id.with_context(display_default_code=False).display_name"/>
+	                                                  </a>
+	                                              </div>
+	                                              <div class="text-muted">
+	                                                  <t t-foreach="line.name.splitlines()[1:]" t-as="name_line">
+	                                                      <span><t t-esc="name_line"/></span><br/>
+	                                                  </t>
+	                                              </div>
+	                                          </td>
+	                                          <td class="text-left"></td>
+	                                          <td>
+	                                              <div id="quote_qty">
+	                                                  <span t-field="line.product_uom_qty"/>
+	                                                  <span t-field="line.product_uom"/>
+	                                              </div>
+	                                          </td>
+	                                          <td>
+	                                              <span class="text-right">
+	                                                  <div t-field="line.price_unit"
+	                                                      t-options='{"widget": "monetary", "display_currency": order.pricelist_id.currency_id}'/>
+	                                              </span>
+	                                          </td>
+	                                          <td>
+	                                              <div class="text-right"
+	                                                  t-field="line.price_subtotal"
+	                                                  t-options='{"widget": "monetary", "display_currency": order.pricelist_id.currency_id}'/>
+	                                          </td>
+	                                      </tr>
+	                                    </tbody>
+	                                    <tfooter>
+	                                      <tr>
+	                                        <td colspan="4" class="text-right"><strong>Sub-Total:</strong>
+	                                    	</td>
+	                                        <td class="text-right">
+	                                              <span t-field="order.amount_untaxed" style="white-space: nowrap;" t-options="{'widget': 'monetary','from_currency': order.pricelist_id.currency_id,'display_currency': website.currency_id}" />
+	                                        </td>
+	                                      </tr>
+	                                      <tr>
+	                                        <td colspan="4" class="text-right"><strong>Eco Tax (-2.00):</strong>
+	                                      	</td>
+	                                        <td class="text-right">
+	                                            <span t-field="order.amount_tax" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'from_currency': order.pricelist_id.currency_id, 'display_currency': website.currency_id}" />
+	                                        </td>
+	                                      </tr>
+	                                      <tr>
+	                                        <td colspan="4" class="text-right"><strong>VAT (20%):</strong></td>
+	                                        <td class="text-right">
+	                                        </td>
+	                                      </tr>
+	                                      <tr>
+	                                        <td colspan="4" class="text-right"><strong>Total:</strong></td>
+	                                        <td class="text-right">
+	                                            <strong t-field="order.amount_total"
+		                                                  t-options='{"widget": "monetary", "display_currency": order.pricelist_id.currency_id}'/>
+	                                        </td>
+	                                      </tr>
+	                                  </tfooter>
+                                	</table>
+                                	</div>
+	                                <div class="clearfix" />
+	                                <div class="oe_structure" />
+	                                <h3 class="text-left">
+	                                    <strong>Payment information:</strong>
+	                                </h3>
+	                                <table class="table">
+	                                    <tbody>
+	                                        <tr>
+	                                            <td colspan="2">
+	                                                <strong>Payment Method:</strong>
+	                                                <t t-esc="order.payment_acquirer_id.name" />
+	                                            </td>
+	                                            <td class="text-right" width="100">
+	                                                <strong>Total:</strong>
+	                                            </td>
+	                                            <td class="text-right" width="100">
+	                                                <strong t-field="order.amount_total" t-options="{'widget': 'monetary', 'display_currency': order.pricelist_id.currency_id}" />
+	                                            </td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                                <t t-call="website_sale.payment_confirmation_status" />
+	                    </div>
+		            </div>
+		            <div class="col-md-12">
+			            <div class="buttons">
+			                <div class="pull-right"><a href="/shop" class="btn btn-primary">Continue</a></div>
+			            </div>
+			        </div>
+                            
+                </div>
+                    
+            </div>
+        	</section> 
+
+		</xpath>
+	</template>
+</odoo>

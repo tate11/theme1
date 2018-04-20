@@ -1,0 +1,1547 @@
+<odoo>
+    <data>
+        <template id="custom_website_header" name="Custom Header" inherit_id="website.layout" priority="200">
+            <xpath expr="//header" position="replace">
+                <header>
+                    <div class="header_top">
+                        <div class="container">
+                            <div class="row">
+                                <div class="header_top_offer col-lg-6 col-md-6">
+                                    <!--p>
+                                        <label>Unlock a World of Privileges with 50% off on this festival</label>
+                                    </p-->
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="header_profile">
+                                        <div class="my_account_dropdown dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                                               aria-expanded="false">
+                                                <t t-if="website.user_id == user_id">
+                                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                                    My Account
+                                                    <span class="caret"></span>
+                                                </t>
+                                                <t t-if="website.user_id != user_id">
+                                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                                    <span t-esc="(len(user_id.name)&gt;25) and (user_id.name[:23]+'...') or user_id.name"/>
+                                                    <span class="caret"></span>
+                                                </t>
+
+                                            </a>
+                                            <ul class="dropdown-menu" t-if="website.user_id == user_id">
+                                                <li>
+                                                    <a href="/web/login">Login</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/register_custom">Register</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/shop/cart">Shopping Cart</a>
+                                                </li>
+                                            </ul>
+                                            <ul class="dropdown-menu" t-if="website.user_id != user_id">
+                                                <li>
+                                                    <a href="/account_information">View Profile</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/shop/wishlist">Wishlist</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/shop/cart">Shopping Cart</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/shop/checkout">Checkout</a>
+                                                </li>
+                                                <li>
+                                                    <a t-attf-href="/web/session/logout?redirect=/">Logout</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="wishlist" id="my_wish">
+                                                <a href="/shop/wishlist">
+                                                    <i class="fa fa-heart" aria-hidden="true"></i>
+                                                    Wishlist
+                                                </a>
+                                        </div>
+                                        <li class="dropdown cart_dropdown">
+                                            <a href="/shop/cart">
+                                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                <sup t-attf-class="my_cart_quantity label label-primary cart_total"
+                                                     t-esc="website_sale_order and website_sale_order.cart_quantity or '0'"/>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header_menu">
+                        <div class="container">
+                            <div class="row">
+                                <div class="header_menu_inner">
+                                    <div class="navbar-header col-md-3">
+                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                                data-target="#bs-example-navbar-collapse-1">
+                                            <span class="sr-only">Toggle navigation</span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="/">
+                                            <img src="/logo.png?company=${company.id}"
+                                                 style="padding: 0px; margin: 0px; height: auto; width: 80px;"
+                                                 alt="${company.name}"/>
+                                        </a>
+                                    </div>
+                                    <div class=" col-md-7 custom_nav collapse navbar-collapse"
+                                         id="bs-example-navbar-collapse-1">
+                                        <ul class="nav navbar-nav">
+                                            <li class="active">
+                                                <a href="/">Home</a>
+                                            </li>
+                                            <li>
+                                                <a href="/accessories">Accessories</a>
+                                            </li>
+                                            <li class="fillers_inner">
+                                                <a href="#" class="dropdown" data-toggle="dropdown">Fillers</a>
+                                                <ul class="dropdown-content fillers_dropdown">
+                                                    <li class="fillers_mega_row" style="opacity: 0;">
+                                                        <t t-set="category_fetch"
+                                                           t-value="website.category_check().filtered(lambda x: not x.parent_id)"></t>
+                                                        <div class="row">
+                                                            <t t-foreach="category_fetch" t-as="category_individual">
+                                                                <t t-if="category_individual_index &lt; 4 and not category_individual.parent_id">
+                                                                    <div class="col-sm-12 col-md-3">
+                                                                        <div class="fillers_box">
+                                                                            <a t-att-href="'/category/%s' %slug(category_individual)">
+                                                                                <t t-if="category_individual.image_medium">
+                                                                                    <img t-att-src="'data:image/png;base64,'+category_individual.image_medium"/>
+                                                                                    <div class="fillers_desc">
+                                                                                        <h4>
+                                                                                            <a t-att-id="'genrate_style_4_categ_id-%s' % category_individual.id"
+                                                                                               t-att-href="'/category/%s' %slug(category_individual)"
+                                                                                               t-field="category_individual.display_name"/>
+                                                                                        </h4>
+                                                                                    </div>
+                                                                                </t>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </t>
+                                                            </t>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="#">Glues</a>
+                                            </li>
+                                            <li>
+                                                <a href="/page/contactus">Contact us</a>
+                                            </li>
+                                            <!-- <li t-if="website.user_id == user_id">
+                                                <a t-attf-href="/web/login">
+                                                    <b>Sign in</b>
+                                                </a>
+                                            </li>
+                                            <li class="dropdown" t-ignore="true" t-if="website.user_id != user_id">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <b>
+                                                        <div t-esc="(len(user_id.name)&gt;25) and (user_id.name[:23]+'...') or user_id.name" />
+                                                        <span class="caret"></span>
+                                                    </b>
+                                                </a>
+                                                <ul class="dropdown-menu js_usermenu" role="menu">
+                                                    <li id="o_logout">
+                                                        <a t-attf-href="/web/session/logout?redirect=/" role="menuitem">Logout</a>
+                                                    </li>
+                                                </ul>
+                                            </li> -->
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <ul class="search_cart nav navbar-nav navbar-right">
+                                           <li class="custom_close_icon">
+												
+						                        <a href="#" class="search_icon">
+						                            <i class="fa fa-search" aria-hidden="true"></i>
+						                        </a>
+												<a href="#" class="search_icon_close hidden">
+						                           <i class="fa fa-close"></i>
+						                        </a>
+						                        <div class="search_formds form-group hidden">
+						                            <div class="form-group has-feedback">
+														<form action="/search" method="get" t-att-class="search_class">
+						                                <input type="text" class="form-control" id="inputValidation" placeholder="Search" name="search"/>
+						                                <button type='submit' class="glyphicon glyphicon-search form-control-feedback1" href='/'></button>
+														</form>
+						                            </div>
+						                        </div>
+												
+						                    </li>
+											
+                                            <t t-set="website_sale_order" t-value="website.sale_custom_get_order()"/>
+                                            <li class="dropdown">
+                                                <a href="/shop/cart">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    <sup t-attf-class="my_cart_quantity label label-primary cart_total"
+                                                         t-esc="website_sale_order and website_sale_order.cart_quantity or '0'"/>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </header>
+
+            </xpath>
+            <xpath expr="//footer" position="replace">
+                <footer class="footer">
+                    <div class="container">
+                        <div class="row" style="margin-top: 50px;">
+                            <div class="col-md-4">
+                                <div class="footer_inner">
+                                    <h1>
+                                        <a href="/">
+                                            <img src="/logo.png?company=${company.id}"
+                                                 style="padding: 0px; margin: 0px; height: auto; width: 80px;"
+                                                 alt="${company.name}"/>
+                                        </a>
+                                    </h1>
+                                    <div class="about_content">
+                                        <p>You are why we do what we do. Providing you with the best possible experience
+                                            every time you walk through our doors is our primary focus. Because of you,
+                                            we seek out the most cutting edge products, services, technology, equipment
+                                            and training.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="footer_inner">
+                                    <h3>Categories</h3>
+                                    <ul class="f_submenu">
+                                        <li>
+                                            <a href="/accessories">Accessories</a>
+                                        </li>
+                                        <!--li><a href="#">Cleaners</a></li-->
+                                        <li>
+                                            <a href="#">Fillers</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Glues</a>
+                                        </li>
+                                        <li>
+                                            <a href="/page/contactus">Contact us</a>
+                                        </li>
+                                        <li>
+                                            <a href="/privacy_policy" target="_blank">Privacy &amp; Policy</a>
+                                        </li>
+                                        <!--li><a href="#">Preservers</a></li-->
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="footer_inner">
+                                    <h3>Get connected</h3>
+                                    <div class="about_content">
+                                        <p>Like, share, or follow for exclusive info!</p>
+                                        <ul class="f_social">
+                                            <li>
+                                                <a t-att-href="request.env['website'].sudo().search([])[0].social_googleplus or ''">
+                                                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a t-att-href="request.env['website'].sudo().search([])[0].social_linkedin or ''">
+                                                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a t-att-href="request.env['website'].sudo().search([])[0].social_pintrest or ''">
+                                                    <i class="fa fa-pinterest" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a t-att-href="request.env['website'].sudo().search([])[0].social_twitter or ''">
+                                                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a t-att-href="request.env['website'].sudo().search([])[0].social_facebook or ''">
+                                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="copyright">
+                        <div class="container">
+                            <div class="copyright_inner">
+                                <p>Powered by <a href="https://www.mptechnolabs.com">Mp Technolabs</a> © 2018
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+
+            </xpath>
+
+        </template>
+        <!--
+                <template id="custom_website_header" name="Custom Header" inherit_id="website.layout" priority="200">
+                    <div id="wrapwrap" position="replace">
+                        <main>
+                            <t t-raw="0"/>
+                        </main>
+
+                        &lt;!&ndash; <xpath expr="//footer" position="replace"> &ndash;&gt;
+                    </div>
+                </template>
+        -->
+
+        <template id="product_replace" inherit_id="website_sale.products_item">
+            <xpath expr="//form" position="replace"/>
+        </template>
+        <template id="category_product_search" inherit_id="website_sale.categories_recursive" priority="200">
+            <xpath expr="//li/a" position="replace">
+                <a t-att-href="keep('/category/' + slug(c), category=0)" t-field="c.name"></a>
+            </xpath>
+        </template>
+        <template id="category_recurcive_custom" inherit_id="website_sale.option_collapse_categories_recursive"
+                  priority="200">
+            <xpath expr="//li/a" position="replace">
+                <a t-att-href="keep('/category/' + slug(categ), category=0)" t-field="categ.name"></a>
+            </xpath>
+        </template>
+        <template id="custom_products" name="Custom Products" priority="200">
+            <div id="wrap" class="js_sale">
+                <div class="oe_structure"/>
+                <t t-call="custom_theme.quick_view"/>
+                <div class="container oe_website_sale">
+                    <section class="arrivals_fillers">
+                        <div class="arrivals_fillers_wrapper">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="new_arriavals_wrapper">
+                                        <h3>Latest</h3>
+                                        <div class="controls hidden-xs left_right_crsl">
+                                            <a class="left fa fa-chevron-left btn btn-success" href="#carousel-example"
+                                               data-slide="prev"></a>
+                                            <a class="right fa fa-chevron-right btn btn-success"
+                                               href="#carousel-example" data-slide="next"></a>
+                                        </div>
+                                        <div id="carousel-example" class="carousel slide hidden-xs" data-ride="carousel"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                <t t-call="custom_theme.latest_product"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="deal_banner oe_structure oe_empty o_editable">
+                                        <div id="myCarousel1522721793250" class="carousel slide s_banner" data-interval="10000" style="height: 400px;">
+                                        <ol class="carousel-indicators hidden">
+                                            <li data-target="#myCarousel1522721793250" data-slide-to="0" class="active"></li>
+                                        </ol>
+                                        <div class="carousel-inner">
+                                            <div class="item active bg-alpha oe_img_bg" style="background-image: url('custom_theme/static/src/img/deal-banner.jpg');">
+                                                <div class="container">
+                                                    <div class="row content"><div class="carousel-content col-md-offset-1 mt128 mb96 col-md-9"><h2 class=""><font style="font-size: 14px;" class="text-white">Deal OF THE DAY</font></h2><h4 class="text-white">POPULAR PRODCUTS</h4><h4 class=""><font style="font-size: 24px;color:#9bd147">FROM $30.00</font><br/></h4><p><a href="/page/website.contactus" class="btn btn-default btn-lg" data-original-title="" title="">SHOP NOW</a></p></div></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="carousel-control left hidden" data-target="#myCarousel1522721793250" data-slide="prev" style="width: 10%" data-cke-saved-href="#myCarousel1522721793250"><i class="fa fa-chevron-left"></i></div>
+                                        <div class="carousel-control right hidden" data-target="#myCarousel1522721793250" data-slide="next" style="width: 10%" data-cke-saved-href="#myCarousel1522721793250"><i class="fa fa-chevron-right"></i></div>
+    </div>
+										
+                                        <!--div class="deal_banner_img">
+                                            <img src="/custom_theme/static/src/img/deal-banner.jpg" alt="deal banner"/>
+                                        </div>
+                                        <div class="deal_banner_desc">
+                                            <h6>deal of the day</h6>
+                                            <h4>Popular products</h4>
+                                            <h3>from $30.00</h3>
+                                            <a class="btn" href="#">Shop now</a>
+                                        </div-->
+                                    </div>
+                                </div>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <div class="fillers_wrapper">
+                                        <div class="fillers_heading">
+                                            <h3>Fillers</h3>
+                                            <ul class="fillers_tabs nav">
+                                                <li class="active">
+                                                    <a data-toggle="pill" class="new">New</a>
+                                                </li>
+                                                <li>
+                                                    <a data-toggle="pill" class="featured">Featured</a>
+                                                </li>
+                                                <li>
+                                                    <a data-toggle="pill" class="specials">Specials</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="products_pager1 fillers_tabs_inner container">
+	                                        <t t-call="custom_theme.product_home">
+	                                        </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </template>
+        <template id="product_home">
+            <t t-foreach="bins" t-as="tr_product">
+                <t t-foreach="tr_product" t-as="td_product">
+                    <t t-if="td_product">
+                        <div class="Product_layout col-xs-4">
+                            <div class="p_layout_wrapper">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div itemscope="itemscope" itemtype="http://schema.org/Product">
+                                    <div class="oe_product_image">
+                                        <div class="p_photo"><t t-set="product" t-value="td_product['product']"/>
+											<t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount' and (compute_currency(product.website_public_price) != product.website_price)">
+                                            	<div class="p_sale">
+													<span><t t-esc="website_price_difference"/></span>
+												
+													
+                                                	<span><t t-esc="int((compute_currency(product.website_public_price) - product.website_price) *100 / compute_currency(product.website_public_price))"/>% off</span>
+												
+                                            	</div>
+											</t>
+                                            
+                                            <div t-att-colspan="td_product['x'] != 1 and td_product['x']"
+                                                 t-att-rowspan="td_product['y'] != 1 and td_product['y']"
+                                                 t-attf-class="oe_grid oe-height-#{td_product['y']*2} #{ td_product['class'] }"
+                                                 alt="a"/>
+                                            <div class="oe_product_cart"
+                                                 t-att-data-publish="product.website_published and 'on' or 'off'"/>
+
+                                            <button class="quickview btn_icon1" title="Quick View"
+                                                    data-toggle="modal"
+                                                    t-att-data-target="'#product_view'+str(product.id)">
+                                                <i class="fa fa-search-plus" aria-hidden="true"/>
+                                            </button>
+
+
+                                            <a itemprop="url"
+                                               t-att-href="keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))">
+                                                <span itemprop="image"
+                                                      t-attf-content="{{request.httprequest.url_root}}web/image/product.template/{{product.id}}/image"
+                                                      t-field="product.image"
+                                                      t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300', 'zoom': 'image', 'height': '270', 'width':'270'}"
+                                                      t-att-alt="product.name"/>
+                                            </a>
+                                        </div>
+                                        <div id="in-wishlist-shop"></div>
+                                        <div class="product-des">
+                                            <div class="hover-cnt">
+                                                <div id="wishlist_shop" class="c_icon_common"></div>
+                                                <div id="quick_view_shop" class="c_icon_common"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <t t-if="show_publish">
+                                        <div id="website_published_button" class=""
+                                             groups="sales_team.group_sale_manager">
+                                            <t t-call="website.publish_management">
+                                                <t t-set="object" t-value="product"/>
+                                                <t t-set="publish_edit" t-value="True"/>
+                                                <t t-set="action" t-value="'product.product_template_action'"/>
+                                            </t>
+                                        </div>
+                                    </t>
+                                    <section class="p_caption">
+                                            <b>
+                                                <a itemprop="name" href="/" t-att-content="product.name"
+                                                   t-field="product.name"/>
+                                            </b>
+
+                                        <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer"
+                                             class="product_price" t-if="product.product_variant_ids">
+                                            <b>
+                                                <t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount'">
+                                                    <del class="text-danger mr8" style="white-space: nowrap;"
+                                                         t-esc="compute_currency(product.website_public_price)"
+                                                         t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}"/>
+                                                </t>
+
+                                                <span t-esc="product.website_price"
+                                                      t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                                <span itemprop="price" style="display:none;"
+                                                      t-esc="product.website_price"/>
+                                                <span itemprop="priceCurrency" style="display:none;"
+                                                      t-esc="website.currency_id.name"/>
+                                            </b>
+                                        </div>
+                                        <div>
+                                            <form action="/shop/cart/update" method="post">
+                                                <input name="product_id" t-att-value="product.product_variant_id.id"
+                                                       type="hidden"/>
+                                                <t t-if="len(product.product_variant_ids) == 1">
+                                                    <button class="btn_icon"
+                                                            t-attf-class="btn_#{product.product_variant_ids[0].id} btn_icon"
+                                                            type="button" data-toggle="tooltip"
+                                                            data-original-title="Add to Wish List"
+                                                            style="vertical-align:middle;">
+                                                        <t t-if="not product.is_wishlist()">
+                                                            <a class="o_add_wishlist"
+                                                               t-att-data-product-product-id="product.product_variant_ids[0].id"
+                                                               data-action="o_wishlist">
+                                                                <i class="fa fa-heart-o"></i>
+                                                            </a>
+                                                        </t>
+                                                        <t t-if="product.is_wishlist()">
+                                                            <a class="o_fill_wishlist"
+                                                               t-att-data-product-product-id="product.product_variant_ids[0].id">
+                                                                <i class="fa fa-heart"></i>
+                                                            </a>
+                                                        </t>
+                                                    </button>
+                                                    <a class="a-submit">
+                                                        <button class="p_add_to_cart" type="button"
+                                                                data-toggle="tooltip" data-original-title="Add to Cart">
+                                                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                            <span class="del768">Add to Cart</span>
+                                                        </button>
+                                                    </a>
+                                                </t>
+                                                <t t-if="len(product.product_variant_ids) &gt; 1">
+                                                    <button class="btn_icon"
+                                                            t-attf-class="btn_#{product. product_variant_ids[0].id} btn_icon"
+                                                            type="button" data-toggle="tooltip"
+                                                            data-original-title="Add to Wish List"
+                                                            style="vertical-align:middle;">
+                                                        <t t-if="not product.is_wishlist()">
+                                                            <a class="o_add_wishlist"
+                                                               t-att-data-product-product-id="product.product_variant_ids[0].id"
+                                                               data-action="o_wishlist">
+                                                                <i class="fa fa-heart-o"></i>
+                                                            </a>
+                                                        </t>
+                                                        <t t-if="product.is_wishlist()">
+                                                            <a class="o_fill_wishlist"
+                                                               t-att-data-product-product-id="product.product_variant_ids[0].id">
+                                                                <i class="fa fa-heart"></i>
+                                                            </a>
+                                                        </t>
+                                                    </button>
+                                                    <a class="a-submit">
+                                                        <button class="p_add_to_cart" type="button"
+                                                                data-toggle="tooltip" data-original-title="Add to Cart">
+                                                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                            <span class="del768">Add to Cart</span>
+                                                        </button>
+                                                    </a>
+                                                </t>
+                                            </form>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+            <t t-if="not bins">
+                <div class="text-center text-muted oe_product">
+                    <h3 class="css_editable_display">No product defined.</h3>
+                    <p groups="sales_team.group_sale_manager">Click <i>'New'</i> in the top-right corner to create your
+                        first product.
+                    </p>
+                </div>
+            </t>
+        </template>
+		<template id="featured_product">
+            <t t-foreach="bins" t-as="tr_product">
+                <t t-foreach="tr_product" t-as="td_product">
+                    <t t-if="td_product">
+                        <div class="Product_layout col-xs-4">
+                            <div class="p_layout_wrapper">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div itemscope="itemscope" itemtype="http://schema.org/Product">
+                                    <div class="oe_product_image">
+										<t t-set="product" t-value="td_product['product']"/>
+                                        <div class="p_photo">
+                                            <t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount' and (compute_currency(product.website_public_price) != product.website_price)">
+                                            	<div class="p_sale">
+													<span><t t-esc="website_price_difference"/></span>
+												
+													
+                                                	<span><t t-esc="int((compute_currency(product.website_public_price) - product.website_price) *100 / compute_currency(product.website_public_price))"/>% off</span>
+												
+                                            	</div>
+											</t>
+                                            
+                                            <div t-att-colspan="td_product['x'] != 1 and td_product['x']"
+                                                 t-att-rowspan="td_product['y'] != 1 and td_product['y']"
+                                                 t-attf-class="oe_grid oe-height-#{td_product['y']*2} #{ td_product['class'] }"
+                                                 alt="a"/>
+                                            <div class="oe_product_cart"
+                                                 t-att-data-publish="product.website_published and 'on' or 'off'"/>
+
+                                            <button class="quickview btn_icon1" title="Quick View"
+                                                    data-toggle="modal"
+                                                    t-att-data-target="'#product_view'+str(product.id)">
+                                                <i class="fa fa-search-plus" aria-hidden="true"/>
+                                            </button>
+
+											<t t-esc="pager"/>
+                                            <!--a itemprop="url"
+                                               t-att-href="keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))"-->
+                                                <span itemprop="image"
+                                                      t-attf-content="{{request.httprequest.url_root}}web/image/product.template/{{product.id}}/image"
+                                                      t-field="product.image"
+                                                      t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300', 'zoom': 'image', 'height': '270', 'width':'270'}"
+                                                      t-att-alt="product.name"/>
+
+                                        </div>
+                                        <div id="in-wishlist-shop"></div>
+                                        <div class="product-des">
+                                            <div class="hover-cnt">
+                                                <div id="wishlist_shop" class="c_icon_common"></div>
+                                                <div id="quick_view_shop" class="c_icon_common"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <t t-if="show_publish">
+                                        <div id="website_published_button" class=""
+                                             groups="sales_team.group_sale_manager">
+                                            <t t-call="website.publish_management">
+                                                <t t-set="object" t-value="product"/>
+                                                <t t-set="publish_edit" t-value="True"/>
+                                                <t t-set="action" t-value="'product.product_template_action'"/>
+                                            </t>
+                                        </div>
+                                    </t>
+                                    <section class="p_caption">
+                                        <h5>
+                                            <strong>
+                                                <a itemprop="name" href="/" t-att-content="product.name"
+                                                   t-field="product.name"/>
+                                            </strong>
+                                        </h5>
+                                        <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer"
+                                             class="product_price" t-if="product.product_variant_ids">
+                                            <b>
+                                                <!--t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount'">
+                                                    <del class="text-danger mr8" style="white-space: nowrap;"
+                                                         t-esc="compute_currency(product.website_public_price)"
+                                                         t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}"/>
+                                                </t-->
+
+                                                <span t-esc="product.website_price"
+                                                      t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                                <span itemprop="price" style="display:none;"
+                                                      t-esc="product.website_price"/>
+                                                <span itemprop="priceCurrency" style="display:none;"
+                                                      t-esc="website.currency_id.name"/>
+                                            </b>
+                                        </div>
+                                        <div>
+                                            <form action="/shop/cart/update" method="post">
+                                                <input name="product_id" t-att-value="product.product_variant_id.id"
+                                                       type="hidden"/>
+                                                <t t-if="len(product.product_variant_ids) == 1">
+                                                    <button class="btn_icon"
+                                                            t-attf-class="btn_#{product.product_variant_ids[0].id} btn_icon"
+                                                            type="button" data-toggle="tooltip"
+                                                            data-original-title="Add to Wish List"
+                                                            style="vertical-align:middle;">
+                                                        <t t-if="not product.is_wishlist()">
+                                                            <a class="o_add_wishlist"
+                                                               t-att-data-product-product-id="product.product_variant_ids[0].id"
+                                                               data-action="o_wishlist">
+                                                                <i class="fa fa-heart-o"></i>
+                                                            </a>
+                                                        </t>
+                                                        <t t-if="product.is_wishlist()">z
+                                                            <a class="o_fill_wishlist"
+                                                               t-att-data-product-product-id="product.product_variant_ids[0].id">
+                                                                <i class="fa fa-heart"></i>
+                                                            </a>
+                                                        </t>
+                                                    </button>
+                                                    <a class="a-submit">
+                                                        <button class="p_add_to_cart" type="button"
+                                                                data-toggle="tooltip" data-original-title="Add to Cart">
+                                                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                            <span class="del768">Add to Cart</span>
+                                                        </button>
+                                                    </a>
+                                                </t>
+                                                <t t-if="len(product.product_variant_ids) &gt; 1">
+                                                    <button class="btn_icon"
+                                                            t-attf-class="btn_#{product. product_variant_ids[0].id} btn_icon"
+                                                            type="button" data-toggle="tooltip"
+                                                            data-original-title="Add to Wish List"
+                                                            style="vertical-align:middle;">
+                                                        <t t-if="not product.is_wishlist()">
+                                                            <a class="o_add_wishlist"
+                                                               t-att-data-product-product-id="product.product_variant_ids[0].id"
+                                                               data-action="o_wishlist">
+                                                                <i class="fa fa-heart-o"></i>
+                                                            </a>
+                                                        </t>
+                                                        <t t-if="product.is_wishlist()">
+                                                            <a class="o_fill_wishlist"
+                                                               t-att-data-product-product-id="product.product_variant_ids[0].id">
+                                                                <i class="fa fa-heart"></i>
+                                                            </a>
+                                                        </t>
+                                                    </button>
+                                                    <a class="a-submit">
+                                                        <button class="p_add_to_cart" type="button"
+                                                                data-toggle="tooltip" data-original-title="Add to Cart">
+                                                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                            <span class="del768">Add to Cart</span>
+                                                        </button>
+                                                    </a>
+                                                </t>
+                                            </form>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+            <t t-if="not bins">
+                <div class="text-center text-muted oe_product">
+                    <h3 class="css_editable_display">No product defined.</h3>
+                    <p groups="sales_team.group_sale_manager">Click <i>'New'</i> in the top-right corner to create your
+                        first product.
+                    </p>
+                </div>
+            </t>
+        </template>
+        <template id="latest_product">
+            <t t-foreach="latest_products" t-as="latest">
+                <input name="product_id" t-att-value="latest.product.product_variant_id.id" type="hidden"/>
+                <t t-if="latest_index == 0">
+                    <div class="item active">
+                        <div class="l_Product_layout">
+                            <div class="l_layout_wrapper">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div itemscope="itemscope" itemtype="http://schema.org/Product">
+                                    <div class="oe_product_image">
+                                        <div class="l_photo">
+											<t t-if="latest.product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount' and (compute_currency(latest.product.website_public_price) != latest.product.website_price)">
+                                            	<div class="l_sale">
+													<span><t t-esc="website_price_difference"/></span>
+												compute_currency
+													
+                                                	<span><t t-esc="int((compute_currency(latest.product.website_public_price) - latest.product.website_price) *100 / compute_currency(latest.product.website_public_price))"/>% off</span>
+												
+                                            	</div>
+											</t>
+
+                                            <button class="l_quickview btn_icon1" title="Quick View"
+                                                    data-toggle="modal"
+                                                    t-att-data-target="'#product_view'+str(latest.product.id)">
+                                                <i class="fa fa-search-plus" aria-hidden="true"/>
+                                            </button>
+
+
+                                            <a itemprop="url"
+                                               t-att-href="keep('/shop/product/%s' % slug(latest.product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))">
+                                                <span itemprop="image"
+                                                      t-attf-content="{{request.httprequest.url_root}}web/image/product.template/{{latest.product.id}}/image"
+                                                      t-field="latest.product.image"
+                                                      t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300', 'zoom': 'image', 'height': '270', 'width':'270'}"
+                                                      t-att-alt="latest.product.name"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <section class="l_caption">
+                                        <b>
+                                            <a>
+                                                <t t-esc="latest.product.name"/>
+                                            </a>
+                                        </b>
+                                        <div class="l_price">
+                                            <span t-esc="latest.product.website_price"
+                                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                            <span itemprop="price" style="display:none;"
+                                                  t-esc="latest.product.website_price"/>
+                                            <span itemprop="priceCurrency" style="display:none;"
+                                                  t-esc="website.currency_id.name"/>
+                                        </div>
+                                        <div>
+                                            <form action="/shop/cart/update" method="post">
+                                                <input name="product_id"
+                                                       t-att-value="latest.product.product_variant_id.id"
+                                                       type="hidden"/>
+                                                <t t-if="len(latest.product.product_variant_ids) == 1">
+                                                    <button class="btn_icon" type="button" data-toggle="tooltip" data-original-title="Add to Wish List" style="vertical-align:middle;">
+													<t t-if="not latest.product.is_wishlist()">
+														<a class="o_add_wishlist" t-att-data-product-product-id="latest.product.product_variant_ids[0].id" data-action="o_wishlist">
+															<i class="fa fa-heart-o" aria-hidden="true"></i>
+														</a>
+													</t>
+													<t t-if="latest.product.is_wishlist()">
+														<a class="o_fill_wishlist" t-att-data-product-product-id="latest.product.product_variant_ids[0].id">
+															<i class="fa fa-heart"></i>
+														</a>
+													</t>
+													</button>
+                                                    <a class="a-submit">
+                                                        <button class="l_add_to_cart" type="button"
+                                                                data-toggle="tooltip" data-original-title="Add to Cart">
+                                                            <span>Add to Cart</span>
+                                                        </button>
+                                                    </a>
+                                                </t>
+                                            </form>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </t>
+                <t t-else="">
+                    <div class="item">
+                        <div class="l_Product_layout">
+                            <div class="l_layout_wrapper">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div itemscope="itemscope" itemtype="http://schema.org/Product">
+                                    <div class="oe_product_image">
+
+
+                                        <div class="l_photo">
+                                            <t t-if="latest.product.website_price_difference and website.get_current_pricelist().discount_policy=='with_discount' and (compute_currency(latest.product.website_public_price) != latest.product.website_price)">
+                                            	<div class="l_sale">
+													<span><t t-esc="website_price_difference"/></span>
+												
+													
+                                                	<span><t t-esc="int((compute_currency(latest.product.website_public_price) - latest.product.website_price) *100 / compute_currency(latest.product.website_public_price))"/>% off</span>
+												
+                                            	</div>
+											</t>
+
+
+                                            <button class="l_quickview btn_icon1" title="Quick View"
+                                                    data-toggle="modal"
+                                                    t-att-data-target="'#product_view'+str(latest.product.id)">
+                                                <i class="fa fa-search-plus" aria-hidden="true"/>
+                                            </button>
+
+
+                                            <a itemprop="url"
+                                               t-att-href="keep('/shop/product/%s' % slug(latest.product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))">
+                                                <span itemprop="image"
+                                                      t-attf-content="{{request.httprequest.url_root}}web/image/product.template/{{latest.product.id}}/image"
+                                                      t-field="latest.product.image"
+                                                      t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300', 'zoom': 'image', 'height': '270', 'width':'270'}"
+                                                      t-att-alt="latest.product.name"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <section class="l_caption">
+                                        <b>
+                                            <a>
+                                                <t t-esc="latest.product.name"/>
+                                            </a>
+                                        </b>
+                                        <div class="l_price">
+                                            <span t-esc="latest.product.website_price"
+                                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                            <span itemprop="price" style="display:none;"
+                                                  t-esc="latest.product.website_price"/>
+                                            <span itemprop="priceCurrency" style="display:none;"
+                                                  t-esc="website.currency_id.name"/>
+                                        </div>
+                                        <div>
+                                            <form action="/shop/cart/update" method="post">
+                                                <input name="product_id"
+                                                       t-att-value="latest.product.product_variant_id.id"
+                                                       type="hidden"/>
+												
+                                                <t t-if="len(latest.product.product_variant_ids) == 1">
+													<button class="btn_icon" type="button" data-toggle="tooltip" data-original-title="Add to Wish List" style="vertical-align:middle;">
+													<t t-if="not latest.product.is_wishlist()">
+														<a class="o_add_wishlist" t-att-data-product-product-id="latest.product.product_variant_ids[0].id" data-action="o_wishlist">
+															<i class="fa fa-heart-o" aria-hidden="true"></i>
+														</a>
+													</t>
+													<t t-if="latest.product.is_wishlist()">
+														<a class="o_fill_wishlist" t-att-data-product-product-id="latest.product.product_variant_ids[0].id">
+															<i class="fa fa-heart"></i>
+														</a>
+													</t>
+													</button>
+                                                    <!--button class="l_btn_icon o_add_wishlist" type="button"
+                                                            data-toggle="tooltip"
+                                                            t-att-data-product-product-id="latest.product.product_variant_ids[0].id"
+                                                            data-original-title="Add to Wish List"
+                                                            data-action="o_wishlist">
+                                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                                    </button-->
+                                                    <a class="a-submit">
+                                                        <button class="l_add_to_cart" type="button"
+                                                                data-toggle="tooltip" data-original-title="Add to Cart">
+                                                            <span>Add to Cart</span>
+                                                        </button>
+                                                    </a>
+                                                </t>
+                                            </form>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+
+        </template>
+        <template id="quick_view">
+            <t t-foreach="products" t-as="product">
+                <div class="modal fade" t-att-id="'product_view'+str(product.id)">
+                    <div class="quickview_wrapper modal-dialog">
+                        <div class="modal-content oe_website_sale">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">x</button>
+                            </div>
+                            <div class="modal-body ">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 product_img">
+                                        <span itemprop="image"
+                                              t-attf-content="{{request.httprequest.url_root}}web/image/product.template/{{product.id}}/image"
+                                              t-field="product.image"
+                                              t-options="{'widget': 'image', 'class': 'product_detail_img', 'alt-field': 'name', 'zoom': 'image'}"
+                                              groups="!website_sale.group_website_multi_image"/>
+                                        <t groups="website_sale.group_website_multi_image">
+                                            <!-- <t t-set="variant_img" t-value="product.product_variant_id.image_variant"/> -->
+                                            <t t-set="image_ids" t-value="product.product_image_ids"/>
+                                            <div id="product_quick" class="carousel slide" data-ride="carousel">
+                                                <!-- <div class="carousel-outer"> -->
+                                                <div class="carousel-inner">
+                                                    <div class="item active">
+                                                        <img class="img img-responsive js_variant_img product_detail_img"
+                                                             t-attf-src="/website/image/product.template/{{product.id}}/image/535x535"
+                                                             t-att-alt="product.name"/>
+                                                    </div>
+
+                                                    <t t-if="len(image_ids)" t-foreach="image_ids" t-as="pimg">
+                                                        <div class="item">
+                                                            <img class="img img-responsive product_detail_img"
+                                                                 t-attf-src="/website/image/product.image/{{pimg.id}}/image/535x535"
+                                                                 t-att-alt="pimg.name"/>
+                                                        </div>
+                                                    </t>
+                                                </div>
+
+                                                <t t-if="len(image_ids)">
+                                                    <a class="left carousel-control" href="#product_quick"
+                                                       data-slide="prev">
+                                                        <span class="glyphicon glyphicon-chevron-left"
+                                                              aria-hidden="true"/>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                    <a class="right carousel-control" href="#product_quick"
+                                                       data-slide="next">
+                                                        <span class="glyphicon glyphicon-chevron-right"
+                                                              aria-hidden="true"/>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </t>
+                                                <!-- </div> -->
+
+                                                <!-- <ol class="carousel-indicators" t-if="len(image_ids)">
+                                                    <li data-target="#myCarousel" data-slide-to="0" class="active">
+                                                        <img class="img img-responsive js_variant_img_small" t-attf-src="/website/image/product.template/{{product.id}}/image/90x90" t-att-alt="product.name"/>
+                                                    </li>
+                                                    <li t-if="variant_img" data-target="#o-carousel-product" data-slide-to="1" class="">
+                                                        <img class="img img-responsive" t-attf-src="/website/image/product.product/{{product.product_variant_id.id}}/image/90x90" t-att-alt="product.name"/>
+                                                    </li>
+                                                    <t t-if="len(image_ids)" t-foreach="image_ids" t-as="pimg">
+                                                        <li data-target="#myCarousel" t-att-data-slide-to="pimg_index + (1 or 2)">
+                                                            <img class="img img-responsive" t-attf-src="/website/image/product.image/{{pimg.id}}/image/90x90" t-att-alt="pimg.name"/>
+                                                        </li>
+                                                    </t>
+                                                </ol> -->
+                                            </div>
+                                        </t>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 product_content">
+                                        <h3 class="m_prod_title" itemprop="name" t-field="product.name">Product Name
+                                        </h3>
+                                        <span itemprop="url" style="display:none;"
+                                              t-esc="'/shop/product/%s' % slug(product)"/>
+                                        <div class="rating hidden-sm rating_ext m_rating_section">
+                                            <t t-call="rating.rating_star_card"/>
+                                        </div>
+                                        <t t-call="custom_theme.quick_add_cart"/>
+                                        <!-- <p t-if="len(product.product_variant_ids) &gt; 1" class="css_not_available_msg bg-danger" style="padding: 15px;">Product not available</p> -->
+                                        <div t-if="product.availability == 'in_stock'" class="alert alert-success">
+                                            <!-- <span class="fa fa-check" /> -->
+                                            <span>In Stock</span>
+                                        </div>
+                                        <div t-if="product.availability == 'warning'" class="alert alert-warning">
+                                            <span class="fa fa-warning"/>
+                                            <span t-field="product.availability_warning"/>
+                                        </div>
+                                        <hr t-if="product.description_sale"/>
+                                        <div>
+                                            <p t-field="product.description_sale" class="text-muted"/>
+                                        </div>
+                                        <hr/>
+                                        <hr t-if="sum([(1 if len(l.value_ids)==1 else 0) for l in product.attribute_line_ids])"/>
+                                        <p class="text-muted">
+                                            <t t-foreach="product.attribute_line_ids.sorted(key=lambda x: x.attribute_id.sequence)"
+                                               t-as="variant_id">
+                                                <t t-if="len(variant_id.value_ids)==1">
+                                                    <span t-field="variant_id.attribute_id"/>:
+                                                    <span t-field="variant_id.value_ids[0].name"/>
+                                                    <br/>
+                                                </t>
+                                            </t>
+                                        </p>
+                                        <p class="text-muted">
+                                            30-day money-back guarantee
+                                            <br/>
+                                            Free Shipping in U.S.
+                                            <br/>
+                                            Buy now, get in 2 days
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container mt32" t-if="product.alternative_product_ids">
+                                <h3>Alternative Products:</h3>
+                                <div class="row mt16" style="">
+                                    <t t-foreach="product.alternative_product_ids" t-as="alt_product">
+                                        <div class="col-md-2 thumbnail"
+                                             style="width: 170px; height:130px; float:left; display:inline; margin-right: 10px; overflow:hidden;">
+                                            <div class="mt16 text-center" style="height: 100%;">
+                                                <div t-field="alt_product.image_small"
+                                                     t-options="{'widget': 'image', 'class': 'img-rounded shadow o_alternative_product' }"/>
+                                                <h5>
+                                                    <a t-attf-href="/shop/product/#{ slug(alt_product) }"
+                                                       style="display: block">
+                                                        <span t-att-title="alt_product.name" t-field="alt_product.name"
+                                                              style="display: block;"/>
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                            <t t-set="head">
+
+                                <meta property="og:type" content="website"/>
+                                <meta property="og:url" t-att-content="request.httprequest.url"/>
+                                <meta property="og:image"
+                                      t-attf-content="#{request.httprequest.url_root}web/image/product.template/#{product.id}/image"/>
+                                <meta property="og:description" t-att-content="product.description_sale"/>
+
+                                <meta name="twitter:card" content="summary_large_image"/>
+                                <meta name="twitter:site" t-attf-content="@#{res_company.name}"/>
+                                <meta name="twitter:title" t-att-content="product.name"/>
+                                <meta name="twitter:description" t-att-content="product.description_sale"/>
+                                <meta name="twitter:image"
+                                      t-attf-content="#{request.httprequest.url_root}web/image/product.template/#{product.id}/image"/>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+            </t>
+        </template>
+
+        <template id="quick_add_cart">
+            <div>
+                <form action="/shop/cart/update" method="post" class="js_add_cart_variants"
+                      t-att-data-attribute_value_ids="attribute_value_ids">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="js_product" t-if="product.product_variant_ids">
+                        <t t-placeholder="select">
+                            <input type="hidden" class="product_id" name="product_id"
+                                   t-att-value="product.product_variant_id.id if len(product.product_variant_ids) == 1 else '0'"/>
+                            <t t-call="website_sale.variants">
+                                <t t-set="ul_class" t-value="'nav-stacked'"/>
+                            </t>
+                        </t>
+                        <!--  <t t-if="len(product.product_variant_ids) &gt; 1">
+                            <label label-default="label-default" class="radio" t-foreach="product.product_variant_ids" t-as="variant_id">
+                                    <input type="radio" name="product_id" class="js_product_change" t-att-checked="'checked' if variant_id_index == 0 else None" t-att-value="variant_id.id" t-att-data-lst_price="variant_id.lst_price" t-att-data-price="variant_id.price"/>
+                                    <span t-esc="variant_id.name_get()[0][1]"/>
+                                    <span class="badge" t-if="variant_id.price_extra">
+                                    <t t-esc="variant_id.price_extra > 0 and '+' or ''"/><span t-field="variant_id.price_extra" style="white-space: nowrap;" t-options='{
+                                        "widget": "monetary",
+                                        "from_currency": product.currency_id,
+                                        "display_currency": website.currency_id}'/>
+                                    </span>
+                            </label>
+                        </t> -->
+
+                        <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer"
+                             class="product_price m_price mt16">
+                            <h4 class="oe_price_h4 css_editable_mode_hidden">
+                                <span class="text-danger oe_default_price"
+                                      style="text-decoration: line-through; white-space: nowrap;"
+                                      t-esc="compute_currency(product.website_public_price)"
+                                      t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}"
+                                      t-att-style="'text-decoration: line-through; white-space: nowrap; ' + '' if product.website_price_difference and website.get_current_pricelist().discount_policy == 'without_discount' else 'display: none;'"/>
+                                <span class="oe_price m_price" style="white-space: nowrap;"
+                                      t-esc="product.website_price"
+                                      t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                <span itemprop="price" style="display:none;" t-esc="product.website_price"/>
+                                <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+                            </h4>
+                            <h4 class="css_non_editable_mode_hidden decimal_precision"
+                                t-att-data-precision="str(product.currency_id.decimal_places)">
+                                <span t-field="product.lst_price"
+                                      t-options='{
+									"widget": "monetary",
+									"display_currency": product.currency_id,
+									}'/>
+                            </h4>
+                            <h4 class="hidden oe_not_available bg-warning">Product not available</h4>
+                        </div>
+
+                        <p t-if="len(product.product_variant_ids) &gt; 1" class="css_not_available_msg bg-danger"
+                           style="padding: 15px;">Product not available
+                        </p>
+                        <t t-if="len(product.product_variant_ids) == 1">
+                            <a class="a-submit">
+                                <button class="p_add_to_cart" type="button" data-toggle="tooltip"
+                                        data-original-title="Add to Cart">
+                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                    <span class="del768">Add to Cart</span>
+                                </button>
+                            </a>
+                            <div class="add_wish_list">
+                                <t t-if="not product.is_wishlist()">
+                                    <a class="o_add_wishlist"
+                                       t-att-data-product-product-id="product.product_variant_ids[0].id"
+                                       data-action="o_wishlist">
+                                        <i class="fa fa-heart-o"></i>
+                                        <span>Add to Wish List</span>
+                                    </a>
+                                </t>
+                                <t t-if="product.is_wishlist()">
+                                    <a class="o_fill_wishlist"
+                                       t-att-data-product-product-id="product.product_variant_ids[0].id">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                </t>
+                            </div>
+                        </t>
+                        <t t-if="len(product.product_variant_ids) &gt; 1">
+                            <a class="a-submit">
+                                <button class="p_add_to_cart" type="button" data-toggle="tooltip"
+                                        data-original-title="Add to Cart">
+                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                    <span class="del768">Add to Cart</span>
+                                </button>
+                            </a>
+                            <div class="add_wish_list">
+                                <t t-if="not product.is_wishlist()">
+                                    <a class="o_add_wishlist"
+                                       t-att-data-product-product-id="product.product_variant_ids[0].id"
+                                       data-action="o_wishlist">
+                                        <i class="fa fa-heart-o"></i>
+                                        <span>Add to Wish List</span>
+                                    </a>
+                                </t>
+                                <t t-if="product.is_wishlist()">
+                                    <a class="o_fill_wishlist"
+                                       t-att-data-product-product-id="product.product_variant_ids[0].id">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                </t>
+                            </div>
+                        </t>
+
+                    </div>
+
+                </form>
+            </div>
+        </template>
+
+        <template id="custom_website_homepage" name="Custom Theme" inherit_id="website.homepage" priority="200">
+            <xpath expr="//div[@id='wrap']" position="replace">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <div class="oe_structure oe_empty"/>
+                    
+                    <section class="leftmenu_banner">
+                        <div class="leftmenu_banner_wrapper">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <div class="left_col_inner">
+                                            <div class="left_submenu1">
+                                                <h3>Categories</h3>
+                                                <ul class="nav nav-pills nav-stacked mt16">
+                                                    <!--li t-att-class=" '' if category else 'active' ">
+                                                        <a t-att-href="keep('/',category=0)" class="o_not_editable">All
+                                                            Products
+                                                        </a>
+                                                    </li-->
+                                                    <t t-foreach="categories" t-as="c">
+                                                        <t t-call="custom_theme.category_product_search"/>
+                                                    </t>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 oe_structure oe_empty o_editable">
+                                        <div class="right_main_banner">
+											<div id="myCarousel1522721485833" class="carousel slide s_banner" data-interval="10000" style="height: 400px;">
+												<ol class="carousel-indicators">
+												  <li data-target="#myCarousel1522721485833" data-slide-to="0" class=""></li>
+												  <li data-target="#myCarousel1522721485833" data-slide-to="1" class=""></li>
+												  <li data-target="#myCarousel1522721485833" data-slide-to="2" class="active"></li>
+												  <li data-target="#myCarousel1522721485833" data-slide-to="3" class=""></li>
+												  <li data-target="#myCarousel1522721485833" data-slide-to="4" class=""></li>
+												</ol>
+												<div class="carousel-inner">
+												  <div class="item bg-alpha">
+													<div class="container">
+													  <div class="row content">
+														<div class="carousel-content col-md-offset-1 mt128 mb96 col-md-10">
+														  <h2 class="o_default_snippet_text">Your Banner Title</h2>
+														  <h4 class="o_default_snippet_text">Click to customize this text</h4>
+														  <p>
+														    <a href="/page/website.contactus" class="btn btn-warning btn-large o_default_snippet_text b_shop_now">Contact us</a>
+														  </p>
+														</div>
+														<div class="carousel-img col-md-6 col-md-offset-1 hidden-sm hidden-xs mt48">
+														  <img class="img-responsive" src="/web/image/website.s_banner_default_image" alt="Banner Odoo Image"/>
+														</div>
+													  </div>
+													</div>
+												  </div>
+												  <div class="item bg-alpha">
+													<div class="container">
+													  <div class="row content">
+														<div class="carousel-content col-md-offset-1 mt128 mb96 col-md-10">
+														  <h2 class="o_default_snippet_text">Your Banner Title</h2>
+														  <h4 class="o_default_snippet_text">Click to customize this text</h4>
+														  <p>
+														    <a href="/page/website.contactus" class="btn btn-warning btn-large o_default_snippet_text b_shop_now">Contact us</a>
+														  </p>
+														</div>
+														<div class="carousel-img col-md-6 col-md-offset-1 hidden-sm hidden-xs mt48">
+														  <img class="img-responsive" src="/web/image/website.s_banner_default_image" alt="Banner Odoo Image"/>
+														</div>
+													  </div>
+													</div>
+												  </div>
+												  <div class="item bg-alpha oe_img_bg oe_custom_bg active" style="background-image: url('/custom_theme/static/src/img/v1-banner-3.png');">
+													<div class="container">
+													  <div class="row content">
+														<div class="carousel-content col-md-offset-1 mt128 mb96 col-md-10">
+														  <h2 class="o_default_snippet_text">Your Banner Title</h2>
+														  <h4 class="o_default_snippet_text">Click to customize this text</h4>
+														  <p>
+														    <a href="/page/website.contactus" class="btn btn-warning btn-large o_default_snippet_text b_shop_now">Contact us</a>
+														  </p>
+														</div>
+														<div class="carousel-img col-md-6 col-md-offset-1 hidden-sm hidden-xs mt48">
+														  <img class="img-responsive" src="/web/image/website.s_banner_default_image" alt="Banner Odoo Image"/>
+														</div>
+													  </div>
+													</div>
+												  </div>
+												  <div class="item bg-alpha oe_img_bg oe_custom_bg" style="background-image: url('/custom_theme/static/src/img/v1-banner-1.png');">
+													<div class="container">
+													  <div class="row content">
+														<div class="carousel-content col-md-offset-1 mt128 mb96 col-md-10">
+														  <h2 class="o_default_snippet_text">Your Banner Title</h2>
+														  <h4 class="o_default_snippet_text">Click to customize this text</h4>
+														  <p>
+														    <a href="/page/website.contactus" class="btn btn-warning btn-large o_default_snippet_text b_shop_now">Contact us</a>
+														  </p>
+														</div>
+													  </div>
+													</div>
+												  </div>
+												  <div class="item bg-alpha oe_img_bg oe_custom_bg" style="background-image: url('/custom_theme/static/src/img/v1-banner-2.png');">
+													<div class="container">
+													  <div class="row content">
+														<div class="carousel-content col-md-offset-1 mt128 mb96 col-md-10">
+														  <h2 class="o_default_snippet_text">Your Banner Title</h2>
+														  <h4 class="o_default_snippet_text">Click to customize this text</h4>
+														  <p>
+														    <a href="/page/website.contactus" class="btn btn-warning btn-large o_default_snippet_text b_shop_now">Contact us</a>
+														  </p>
+														</div>
+													  </div>
+													</div>
+												  </div>
+												</div>
+												<div class="carousel-control left" data-target="#myCarousel1522721485833" data-slide="prev" style="width: 10%" data-cke-saved-href="#myCarousel1522721485833">
+												  <i class="fa fa-chevron-left" data-original-title="" title=""></i>
+												</div>
+												<div class="carousel-control right" data-target="#myCarousel1522721485833" data-slide="next" style="width: 10%" data-cke-saved-href="#myCarousel1522721485833">
+												  <i class="fa fa-chevron-right" data-original-title="" title=""></i>
+												</div>
+											  </div>
+										</div>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+					
+                    
+                    <!-- Leftmenu banner section end -->
+
+                    <!-- second Leftmenu banner section start -->
+                    <section class="second_leftmenu_banner">
+                        <div class="second_leftmenu_banner_wrapper">
+                            <div class="container">
+                                <div class="row">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- second Leftmenu banner section end -->
+                    <t t-call="custom_theme.custom_products"/>
+                    <!-- arrivals and fillers section end -->
+
+                    <!-- Parallax banner section start -->
+					<section class="parallax_main_banner">
+						<div class="container">
+                    		<div class="row">
+							<div class="col-md-12">
+				            <div id="myCarousel1522731465565" class="carousel slide s_banner mt0" data-interval="10000" style="height: 400px;">
+								<ol class="carousel-indicators hidden">
+								  <li data-target="#myCarousel1522731465565" data-slide-to="0" class="active"></li>
+								</ol>
+								<div class="carousel-inner">
+								  <div class="item bg-alpha oe_img_bg active" style="background-image: url('custom_theme/static/src/img/21.jpg');background-attachment: fixed;">
+									<div class="container">
+									  <div class="parallax_image content">
+										<div class="carousel-content col-md-12 parallax_desc" style="text-align:center">
+										  <h3>50% off discount</h3>
+										  <h2>SEE AND BUY WHAT'S GOOD FOR WOOD!</h2>
+										  <p>special offer! GET 15% off your next order*</p>
+										  <p>
+											<a href="/page/website.contactus" class="btn btn-primary btn-lg">SHOP NOW</a>
+										  </p>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								</div>
+								<div class="carousel-control left hidden" data-target="#myCarousel1522731465565" data-slide="prev" style="width: 10%" data-cke-saved-href="#myCarousel1522731465565">
+								  <i class="fa fa-chevron-left"></i>
+								</div>
+								<div class="carousel-control right hidden" data-target="#myCarousel1522731465565" data-slide="next" style="width: 10%" data-cke-saved-href="#myCarousel1522731465565">
+								  <i class="fa fa-chevron-right"></i>
+								</div>
+							  </div>
+							</div>
+							</div>
+						</div>
+					</section>
+					<section class="three_main_banner s_three_columns">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+									<div class="b_image">
+						                <img src="/custom_theme/static/src/img/23-1.png" alt="banner 5"/>
+						                <div class="col-md-12 b_desc text-center">
+						                    <h5 class="tx_black">Long Weekend</h5>
+						                    <h2 class="tx_black">Sale</h2>
+						                    <a href="#" class="b_shop_now">Shop now</a>
+						                </div>
+						            </div>
+								</div>
+													
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="b_image b_center6">
+						                <img src="/custom_theme/static/src/img/22.png" alt="banner 5"/>
+						                <div class="col-md-12 b_desc text-center">
+						                    <h2>extra 50% off</h2>
+						                    <h5>on every item over $100</h5>
+						                    <p>This offer is valid on all our store items*</p>
+						                    <a href="#" class="b_shop_now">Shop now</a>
+						                </div>
+						            </div>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-12">
+									<div class="b_image b_center6">
+						                <img src="/custom_theme/static/src/img/24-1.png" alt="banner 5"/>
+						                <div class="col-md-12 b_desc text-center">
+						                    <h5 class="tx_white">Last day</h5>
+						                    <h2 class="tx_white">-50% off</h2>
+						                    <a href="#" class="b_shop_now">Shop now</a>
+						                </div>
+						            </div>
+								</div>
+												
+                                    <!--div id="myCarousel1522731465565" class="carousel slide s_banner mt32" data-interval="10000" style="height: 400px;">
+										<ol class="carousel-indicators hidden">
+										  <li data-target="#myCarousel1522731465565" data-slide-to="0" class="active"></li>
+										</ol>
+										<div class="carousel-inner ">
+										  <div class="item bg-alpha oe_img_bg active b_image" style="background-image: url('custom_theme/static/src/img/23-1.png');">
+											<div class="container">
+											  <div class="row content">
+												<div class="carousel-content col-md-offset-1 mb96 col-md-11 b_desc">
+												    <h5 class="tx_black">LONG WEEKEND</h5>
+												  	<h2 class="tx_black">sale</h2>
+												  	<p>
+												    	<a href="/page/website.contactus" class="btn btn-warning btn-lg b_shop_now">SHOP NOW</a>
+												  	</p>
+												</div>
+											  </div>
+											</div>
+										  </div>
+										</div>
+										<div class="carousel-control left hidden" data-target="#myCarousel1522731465565" data-slide="prev" style="width: 10%" data-cke-saved-href="#myCarousel1522731465565">
+										  <i class="fa fa-chevron-left"></i>
+										</div>
+										<div class="carousel-control right hidden" data-target="#myCarousel1522731465565" data-slide="next" style="width: 10%" data-cke-saved-href="#myCarousel1522731465565">
+										  <i class="fa fa-chevron-right"></i>
+										</div>
+									  </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div id="myCarousel1522731465565" class="carousel slide s_banner mt32" data-interval="10000" style="height: 400px;">
+									<ol class="carousel-indicators hidden">
+									  <li data-target="#myCarousel1522731465565" data-slide-to="0" class="active"></li>
+									</ol>
+									<div class="carousel-inner b_center6">
+									  <div class="item bg-alpha oe_img_bg active b_image" style="background-image: url('custom_theme/static/src/img/22.png');">
+										<div class="container">
+										  <div class="row content">
+										    <div class="carousel-content col-md-offset-1 mb96 col-md-9 b_desc text-center">
+										      <h2 class="text-white">
+										        EXTRA 50% OFF
+										      </h2>
+										      <h5 class="text-white">
+										        ON EVERY ITEM &amp;nbsp; OVER $100
+										      </h5>
+										      <p>THIS OFFER ID VALID ON OUR STORE ITEMS*</p>
+										      <p>
+										        <a href="/page/website.contactus" class="btn btn-warning btn-lg b_shop_now" data-original-title="" title="">SHOP NOW</a>
+										      </p>
+										    </div>
+										  </div>
+										</div>
+									  </div>
+									</div>
+									<div class="carousel-control left hidden" data-target="#myCarousel1522731465565" data-slide="prev" style="width: 10%" data-cke-saved-href="#myCarousel1522731465565">
+									  <i class="fa fa-chevron-left"></i>
+									</div>
+									<div class="carousel-control right hidden" data-target="#myCarousel1522731465565" data-slide="next" style="width: 10%" data-cke-saved-href="#myCarousel1522731465565">
+									  <i class="fa fa-chevron-right"></i>
+									</div>
+								  </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div id="myCarousel1522731465565" class="carousel slide s_banner mt32" data-interval="10000" style="height: 400px;">
+								<ol class="carousel-indicators hidden">
+								  <li data-target="#myCarousel1522731465565" data-slide-to="0" class="active"></li>
+								</ol>
+								<div class="carousel-inner">
+								  <div class="item bg-alpha oe_img_bg active b_image" style="background-image: url('custom_theme/static/src/img/24-1.png');">
+								    <div class="container">
+								      <div class="row content">
+								        <div class="carousel-content mb96 col-md-10 col-md-offset-1 b_desc text-center">
+								          <h5 class="text-white">
+								           	last DAY
+								          </h5>
+								          <h2 class="tx_white">-50% OFF</h2>
+								          <p><a href="/page/website.contactus" class="btn btn-warning btn-lg b_shop_now">SHOP NOW</a></p>
+								        </div>
+								      </div>
+								    </div>
+								  </div>
+								</div>
+								<div class="carousel-control left hidden" data-target="#myCarousel1522731465565" data-slide="prev" style="width: 10%" data-cke-saved-href="#myCarousel1522731465565">
+								  <i class="fa fa-chevron-left"></i>
+								</div>
+								<div class="carousel-control right hidden" data-target="#myCarousel1522731465565" data-slide="next" style="width: 10%" data-cke-saved-href="#myCarousel1522731465565">
+								  <i class="fa fa-chevron-right"></i>
+								</div>
+							  </div-->
+                            
+                        </div>
+						</div>
+                    </section>
+				            <!-- three banner end -->
+
+				            <!-- Newsletter start -->
+				            <section class="newsletter_main_wrapper">
+				                <div class="container">
+				                    <div class="row">
+				                        <div class="col-md-12 mt32">
+				                            <div class="newsletter_inner">
+				                                <div class="newsletter_box">
+				                                    <h3>Sign up to our newsletter</h3>
+				                                    <p class="newsletter_desc">Get the latest product info, updates, special
+				                                        offers and much more.
+				                                    </p>
+				                                    <div class="js_subscribe newsletter_login" data-list-id="1" data-subscribe="on">
+													<input type="email" name="email" class="js_subscribe_email form-control" placeholder="your email..." disabled="disabled"/>
+													<span class="input-group-btn
+">
+													  <a href="#" class="btn-primary js_subscribe_btn o_default_snippet_text hidden newsletter_subscribe" disabled="disabled">Subscribe Now</a>
+													  <a href="#" class="btn-success js_subscribed_btn o_default_snippet_text newsletter_subscribe" disabled="disabled">Thanks</a>
+													</span>
+													<div class="alert alert-success hidden o_default_snippet_text">Thanks for your subscription!</div>
+												  </div>
+				                                </div>
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
+				            </section>
+				        </div>
+				<div class="container oe_structure oe_empty o_editable	">
+				<div class="row">
+				<div class="col-md-12"></div>
+				</div></div>
+            </xpath>
+        </template>
+        <template id="custom_product_products" inherit_id="website_sale.product" priority="200">
+            <xpath expr="//div/section/div/div[@class='col-sm-3 mb8']" position="replace"/>
+        </template>
+        <template id="custom_publish_management" inherit_id="website.publish_management" priority="200">
+            <xpath expr="//div/div/button[1]" position="replace">
+                <button class="btn-danger js_publish_btn">Unpublished</button>
+            </xpath>
+            <xpath expr="//div/div/button[2]" position="replace">
+                <button class="btn-success js_publish_btn">Published</button>
+            </xpath>
+        </template>
+        <!--template id="suggested_products_list_custom" name="Accessories" priority="200">
+            <t t-call="website_sale.suggested_products_list"/>
+        </template-->
+        <!-- <template id="confirmation_payment" inherit_id="website_sale.confirmation" priority="200">
+            <xpath expr="//tbody/tr/td/div/a" position="replace">
+                <a href="/">
+                    <strong t-esc="line.product_id.with_context(display_default_code=False).display_name"/>
+                </a>
+            </xpath>
+        </template> -->
+        <!-- <template id="cart_lines_custom" inherit_id="website_sale.cart_lines" priority="200">
+            <xpath expr="//tbody/t/tr/td/div/a" position="replace">
+                <a href='/'>
+                    <strong t-esc="line.product_id.with_context(display_default_code=False).display_name" />
+                </a>
+            </xpath>
+        </template> -->
+    </data>
+</odoo>

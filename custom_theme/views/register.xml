@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="register_custom" name="Register" priority="200">
+		<t t-call="website.layout">
+			<div class="oe_structure oe_empty">
+						<section class="register_main_wrapper">
+				    <div class="container oe_website_sale">
+				        <div class="row">
+				            <div class="col-md-12">
+				                <ul class="breadcrumb" style="margin-top: 45px;">
+				                    <li><a href="/"><i class="fa fa-home"></i></a></li>
+				                    <li><a href="/my/home">Account</a></li>
+				                    <li><span>Register</span></li>
+				                </ul>
+				            </div>
+				            <div class="col-md-12">
+				                <div class="register_inner">
+				                    <h1>Register Account</h1>
+				                    <p>If you already have an account with us, please login at the <a href="/web/login">login page</a>.</p>
+				                    <form method="post" class="checkout_autoformat register_form" id="regitration_user">
+				                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+				                        <fieldset>
+				                            <legend>Your Personal Details</legend>
+				                            <div class="form-group" t-attf-class="form-group div_name required #{error.get('name') and 'has-error' or ''} ">
+				                                <label class="col-sm-2 control-label" for="name">First Name</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="name" t-att-value="order.partner_id.name or 'name' in checkout and checkout['name']" placeholder="First Name" class="form-control"/>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group required" t-attf-class="form-group div_last_name required #{error.get('last_name') and 'has-error' or ''} ">
+				                                <label class="col-sm-2 control-label">Last Name</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="last_name" t-att-value="order.partner_id.last_name or 'last_name' in checkout and checkout['last_name']" placeholder="Last Name" class="form-control"/>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group required" t-attf-class="form-group #{error.get('login') and 'has-error' or ''} required" id="div_email">
+				                                <label class="col-sm-2 control-label" for="login">E-Mail</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="login" t-att-value="order.partner_id.email or 'login' in checkout and checkout['login']" placeholder="E-Mail" class="form-control"/>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group required" t-attf-class="form-group required #{error.get('phone') and 'has-error' or ''}" id="div_phone">
+				                                <label class="col-sm-2 control-label" for="input-telephone">Telephone</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="phone" t-att-value="order.partner_id.phone or 'phone' in checkout and checkout['phone']" placeholder="Telephone" id="input-payment-telephone" class="form-control"/>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group">
+				                                <label class="col-sm-2 control-label" for="fax">Fax</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="fax" t-att-value="order.partner_id.fax or 'fax' in checkout and checkout['fax']" placeholder="Fax" class="form-control"/>
+				                                </div>
+				                            </div>
+				                        </fieldset>
+				                        <fieldset>
+				                            <legend>Your Address</legend>
+				                            <div class="form-group" t-attf-class="form-group  #{error.get('company_name')">
+				                                <label class="col-sm-2 control-label" for="company_name">Company</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="company_name" t-att-value="order.partner_id.company_name or 'company_name' in checkout and checkout['company_name']" placeholder="Company" class="form-control"/>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group required" t-attf-class="form-group  #{error.get('street') and 'has-error' or ''} div_street">
+				                                <label class="col-sm-2 control-label" for="street">Address 1</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="street" t-att-value="order.partner_id.street or 'street' in checkout and checkout['street']" placeholder="Address 1" class="form-control"/>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group" t-attf-class="form-group  #{error.get('street2') and 'has-error' or ''} div_street required">
+				                                <label class="col-sm-2 control-label" for="street2">Address 2</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="street2" t-att-value="order.partner_id.street2 or 'street2' in checkout and checkout['street2']" placeholder="Address 2" class="form-control"/>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group required" t-attf-class="form-group required #{error.get('city') and 'has-error' or ''} div_city">
+				                                <label class="col-sm-2 control-label" for="city">City</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="city" t-att-value="order.partner_id.city or 'city' in checkout and checkout['city']" placeholder="City" class="form-control"/>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group required" t-attf-class="form-group #{error.get('zip') and 'has-error' or ''} div_zip">
+				                                <label class="col-sm-2 control-label" for="zip">Post Code</label>
+				                                <div class="col-sm-10">
+				                                    <input type="text" name="zip" t-att-value="order.partner_id.zip or 'zip' in checkout and checkout['zip']" placeholder="Post Code" class="form-control"/>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group required" t-attf-class="form-group #{error.get('country_id') and 'has-error' or ''} div_country required">
+				                                <label class="col-sm-2 control-label" for="country_id">Country</label>
+				                                <div class="col-sm-10">
+				                                    <div class="#">
+                                                        <select id="country_id" name="country_id" class="form-control">
+                                                        <option value="">Country...</option>
+                                                        <t t-foreach="countries" t-as="c">
+                                                            <option t-att-value="c.id" t-att-selected="c.id == (country and country.id or -1)">
+                                                                <t t-esc="c.name" />
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                    </div>
+				                                </div>
+				                            </div>
+				                            <div class="clearfix"></div>
+				                            <div class="form-group required" t-attf-class="form-group #{error.get('state_id') and 'has-error' or ''}  div_state">
+				                                <label class="col-sm-2 control-label" for="state_id">Region / State</label>
+				                                <div class="col-sm-10">
+				                                    <div class="#">
+                                                        <select class="form-control " name="state_id" data-init="1">
+                                                            <option value="">State / Province...</option>
+                                                            <t t-foreach="country and country.state_ids or []" t-as="s">
+                                                                <option t-att-value="s.id" t-att-selected="s.id == ('state_id' in checkout and country and checkout['state_id'] != '' and int(checkout['state_id']))">
+                                                                    <t t-esc="s.name" />
+                                                                </option>
+                                                            </t>
+                                                            
+                                                        </select>
+                                                    </div>
+				                                </div>
+				                            </div>
+				                        </fieldset>
+				                        <t t-if="order.partner_id.name == 'Public user'">
+						                    <fieldset>
+						                        <legend>Your Password</legend>
+						                        <div class="form-group required">
+						                            <label class="col-sm-2 control-label">Password</label>
+						                            <div class="col-sm-10">
+						                                <input type="password" name="password" value="" placeholder="Password" class="form-control"/>
+						                            </div>
+						                        </div>
+						                        <div class="clearfix"></div>
+						                        <div class="form-group required">
+						                            <label class="col-sm-2 control-label">Password Confirm</label>
+						                            <div class="col-sm-10">
+						                                <input type="password" name="confirm" value="" placeholder="Password Confirm" class="form-control"/>
+						                            </div>
+						                        </div>
+						                    </fieldset>
+						                </t>
+				                        <fieldset>
+				                            <legend>Newsletter</legend>
+				                            <div class="form-group">
+				                                <label class="col-sm-2 control-label">Subscribe</label>
+				                                <div class="col-sm-10 r_newsletter">
+				                                    <input type="checkbox" class="radio" value="1" name="fooby[1][]"/>Yes
+				                                    <input type="checkbox" class="radio" value="1" name="fooby[1][]"/>No
+				                                   <!-- <input type="radio" value="1" id="newsletter1">
+				                                    <label>Yes</label>
+				                                    <input type="radio" value="0" checked="checked" id="newsletter0">
+				                                    <label>No</label> -->
+				                                </div>
+				                            </div>
+				                        </fieldset>
+				                        <div class="buttons">
+				                            <div class="pull-right" style="margin-bottom: 30px;">
+				                                I have read and agree to the 
+				                                <a href="#" class="agree_privacy"><b>Privacy Policy</b></a>
+				                                <input type="checkbox" name="agree" value="1" id="agree1"/>
+				                                <label for="agree1"></label>
+				                                &amp;nbsp;
+				                                <input type="hidden" name="partner_id" t-att-value="partner_id or '0'" />
+                                            	<input type="submit" name="submitted"  value="Register" class="pull-right submit_register btn_continue"/>
+				                            </div>
+				                        </div>
+				                    </form>
+				               </div>
+				            </div>
+				        </div>
+				    </div>
+				</section>
+			</div>
+		</t>
+	</template>
+</odoo>

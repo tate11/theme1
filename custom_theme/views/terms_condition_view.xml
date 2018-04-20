@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="custom_terms_condition" name="Terms and Condition" priority="200">
+			<t t-call="website.layout">
+				<div id="wrap">
+					<section class="terms_condi_main_wrapper">
+						<div class="container">
+						    <div class="row">
+						        <div class="col-md-12">
+						            <ul class="breadcrumb" style="margin-top: 45px;">
+						                <li><a href="/"><i class="fa fa-home"></i></a></li>
+						                <li><span>Terms &amp; Conditions</span></li>
+						            </ul>
+						        </div>
+						        <div class="col-md-12">
+						            <div class="terms_condi_inner">
+						                <h1>Terms &amp; Conditions</h1>
+						                <div class="terms_condi_sub_inner row">
+						                    <div class="col-md-6">
+						                        <div class="conditions_list">
+						                            <h4><i class="fa fa-check-circle"></i>entire agreement</h4>
+						                            <p>If you require a complete delivery of your orders, please enter an X in the Complete Delivery field on the shipping screen of the customer master record. The indicator is copied into the order header, which you can also use for the purpose. </p>
+						                        </div>
+						                        <div class="conditions_list">
+						                            <h4><i class="fa fa-check-circle"></i>controlling terms</h4>
+						                            <p>Buyer expressly agrees that Seller’s Invoice and these Terms and Conditions of Sale represent the complete agreement of the parties with respect to the sale of the product(s) listed on the Invoice and no different or additional terms or conditions in Buyer’s purchase order or in any other prior or subsequent communications in any way adding to, modifying or otherwise changing these Terms and Conditions of Sale shall be binding upon Seller.</p>
+						                        </div>
+						                        <div class="conditions_list">
+						                            <h4><i class="fa fa-check-circle"></i>acceptance of orders</h4>
+						                            <p>Seller may accept buyer’s offer to purchase and shall be bound to supply the applicable Goods in accordance with these terms and conditions either by execution of the acknowledgment copy of the order, or acceptable electronic transmission, delivery of the Goods to CAI or by any other statement, act or course of conduct which constitutes acceptance under applicable law.</p>
+						                        </div>
+						                    </div>
+						                    <div class="col-md-6">
+						                        <div class="conditions_list">
+						                            <h4><i class="fa fa-check-circle"></i>entire agreement</h4>
+						                            <p>If you require a complete delivery of your orders, please enter an X in the Complete Delivery field on the shipping screen of the customer master record. The indicator is copied into the order header, which you can also use for the purpose. </p>
+						                        </div>
+						                        <div class="conditions_list">
+						                            <h4><i class="fa fa-check-circle"></i>controlling terms</h4>
+						                            <p>Buyer expressly agrees that Seller’s Invoice and these Terms and Conditions of Sale represent the complete agreement of the parties with respect to the sale of the product(s) listed on the Invoice and no different or additional terms or conditions in Buyer’s purchase order or in any other prior or subsequent communications in any way adding to, modifying or otherwise changing these Terms and Conditions of Sale shall be binding upon Seller.</p>
+						                        </div>
+						                        <div class="conditions_list">
+						                            <h4><i class="fa fa-check-circle"></i>acceptance of orders</h4>
+						                            <p>Seller may accept buyer’s offer to purchase and shall be bound to supply the applicable Goods in accordance with these terms and conditions either by execution of the acknowledgment copy of the order, or acceptable electronic transmission, delivery of the Goods to CAI or by any other statement, act or course of conduct which constitutes acceptance under applicable law.</p>
+						                        </div>
+						                    </div>
+						                </div>
+						            </div>
+						        </div>
+						    </div>
+						</div>
+					</section>
+				</div>
+			</t>
+		</template>
+	</data>
+</odoo>

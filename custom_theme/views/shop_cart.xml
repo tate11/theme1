@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="product_item_checkout" inherit_id="website_sale.cart_lines" priority="200">
+		<xpath expr="//div[@class='js_cart_lines well well-lg']" position="replace">
+		<div t-if="not website_sale_order or not website_sale_order.website_order_line" class="js_cart_lines well well-lg">
+          <h1>Your cart is empty!</h1>
+        </div>
+
+		</xpath>
+		<xpath expr="//table[@id='cart_products']" position="replace">
+			
+							<table class="table table-bordered js_cart_lines" id="cart_products" t-if="website_sale_order and website_sale_order.website_order_line">
+								<thead>
+									<tr>
+										<td>Image</td>
+										<td class="text-left">Product Name</td>
+										<td class="text-left">Quantity</td>
+										<td class="text-right">Unit Price</td>
+										<td class="text-right">Total</td>
+										<td style="width: 0"></td>
+									</tr>
+								</thead>
+								<tbody>
+									<t t-foreach="website_sale_order.website_order_line" t-as="line">
+										<tr>
+											<td align="center" t-if="line.product_id.product_tmpl_id">
+												<span t-field="line.product_id.image_small" t-options="{'widget': 'image', 'class': 'img-rounded'}" />
+											</td>
+											<td t-if="line.product_id.product_tmpl_id">
+												<div>
+													<a t-attf-href="/shop/product/#{ slug(line.product_id.product_tmpl_id) }">
+														<strong t-esc="line.product_id.with_context(display_default_code=False).display_name" />
+													</a>
+												</div>
+												<div class="text-muted">
+													<t t-foreach="line.name.splitlines()[1:]" t-as="name_line">
+														<span><t t-esc="name_line"/></span><br/>
+													</t>
+												</div>
+											</td>
+											<td class="text-center" id="td-qty">
+												<div class="oe_website_spinner btn-block cart_quantity clearfix" style="max-width: 200px;">
+													<a t-attf-href="#" class="js_add_cart_json counter" data-no-instant="">
+														<i class="fa fa-minus"></i>
+													</a>
+													<input type="text" class="js_quantity form-control" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty)" />
+													<a t-attf-href="#" class="js_add_cart_json counter" data-no-instant="">
+														<i class="fa fa-plus"></i>
+													</a>
+												</div>
+											</td>
+											<td class="text-right" id="td-price" name="price">
+											<div class="cart_price">
+												<t t-if="(compute_currency(line.product_id.lst_price) - line.price_reduce ) &gt; 0.01  and website.get_current_pricelist().discount_policy=='without_discount'">
+													<del t-attf-class="#{'text-danger mr8'}" style="white-space: nowrap;" t-esc="compute_currency(line.product_id.website_public_price)" t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}" />
+												</t>
+												<span t-field="line.price_reduce_taxexcl" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'from_currency': website_sale_order.pricelist_id.currency_id, 'display_currency': website.currency_id}" groups="sale.group_show_price_subtotal" />
+												</div>
+											</td>
+											<td class="text-right" id="td-price" name="price">
+												<div class="cart_price cart_total">
+												<t t-if="(compute_currency(line.product_id.lst_price) - line.price_reduce ) &gt; 0.01  and website.get_current_pricelist().discount_policy=='without_discount'">
+													<del t-attf-class="#{'text-danger mr8'}" style="white-space: nowrap;" t-esc="compute_currency(line.product_id.website_public_price)" t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}" />
+												</t>
+												<span t-field="line.price_reduce_taxinc" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'from_currency': website_sale_order.pricelist_id.currency_id, 'display_currency': website.currency_id}" groups="sale.group_show_price_total" />
+												</div>
+											</td>
+											<td class="text-center" style="width: 0">
+												<a href='#' class="js_delete_product no-decoration cart_remove">
+													<i class="fa fa-trash"></i>
+												</a>
+											</td>
+										</tr>
+									</t>
+								</tbody>
+							</table>
+							
+						
+				
+		</xpath>
+		<xpath expr="//div[@class='js_cart_lines row']" position="before">
+			<div class="js_cart_lines row" t-if="website_sale_order and website_sale_order.website_order_line">
+			<t t-call="custom_theme.coupon"/>
+			</div>
+		</xpath>
+	</template>
+	<template id="coupon">
+			<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+			<div class="custom_panel panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title"><a href="#collapse-coupon" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" aria-expanded="false">Use Coupon Code <i class="fa fa-caret-down"></i></a></h4>
+						</div>
+
+						<div id="collapse-coupon" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+							<div class="panel-body">
+								<label class="control-label">Enter your coupon here</label>
+								<div class="input-group">
+								<input type="text" name="coupon" value="" placeholder="Enter your coupon here" class="form-control input_coupon"/>
+									<span class="input-group-btn">
+									<input type="button" value="Apply Coupon" id="button-coupon" data-loading-text="Loading..." class="btn_continue"/>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title"><a href="#collapse-voucher" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle collapsed" aria-expanded="false">Use Gift Certificate <i class="fa fa-caret-down"></i></a></h4>
+						</div>
+						<div id="collapse-voucher" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+							<div class="panel-body">
+								<label class="control-label" for="input-voucher">Enter your gift certificate code here</label>
+								<div class="input-group">
+								<input type="text" name="voucher" placeholder="Enter your gift certificate code here" class="form-control input_voucher"/>
+									<span class="input-group-btn">
+									<input type="submit" value="Apply Gift Certificate" id="button-voucher" data-loading-text="Loading..." class="btn_continue"/>
+									</span> 
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>			 
+	</template>
+
+	<template id="custom_total" inherit_id="website_sale.total">
+		<xpath expr="//div[@id='cart_total']" position="replace">
+			<div class="col-sm-4 col-sm-offset-8" id="cart_total" t-if="website_sale_order and website_sale_order.website_order_line">
+					<table class="table table-bordered">
+						<tbody>
+								<tr>
+									<td class="text-right"><strong>Sub-Total:</strong></td>
+									<td class="text-right" id="order_total_untaxed">
+										<span t-field="website_sale_order.amount_untaxed" style="white-space: nowrap;" t-options="{'widget': 'monetary','from_currency': website_sale_order.pricelist_id.currency_id,'display_currency': website.currency_id}"/>
+									</td>
+									</tr>
+								<tr>
+									<td class="text-right"><strong>VAT (20%):</strong></td>
+									<td class="text-right"></td>
+								</tr>
+								<tr>
+									<td class="text-right" ><strong>Total:</strong></td>
+									<td class="text-right" id="order_total">
+										<span t-field="website_sale_order.amount_total" style="white-space: nowrap;" t-options="{'widget': 'monetary','from_currency': website_sale_order.pricelist_id.currency_id,'display_currency': website.currency_id}" />
+									</td>
+								</tr>
+						</tbody>
+					</table>
+			</div>
+		</xpath>
+	</template>
+	
+	<template id="continue_shopping_custom" inherit_id="website_sale.cart" customize_show="True" name="Continue Shopping Button">
+		<xpath expr="//div[@id='wrap']" position="replace">
+			
+			<section class="add_to_cart_wrapper">
+				<div class="container oe_website_sale">
+						<div class="col-md-12">
+							<ul class="breadcrumb">
+								<li><a href="/"><i class="fa fa-home"></i></a></li>
+								<li><span>Shopping Cart</span></li>
+							</ul>
+						</div>
+						<div class="col-md-12">
+							<!-- <div> -->
+								<h1><i class="fa fa-shopping-cart"></i>Shopping Cart</h1>
+								<form action="#" method="post"> 
+								<div class="oe_cart">
+									<t t-call="website_sale.cart_lines" />
+								</div>
+								</form>
+								
+																							
+								<div class=" cont_checkout_btn row">
+									<div class="clearfix " />
+									<div class="pull-left">
+									<a href="/shop" class="btn btn-default">
+										<span class="fa fa-long-arrow-left" />
+										<span class="hidden-xs">Continue Shopping</span>
+										<span class="visible-xs-inline">Continue</span>
+									</a>
+									</div>
+									<div class="pull-right">
+									<a t-if="not optional_products and website_sale_order and website_sale_order.website_order_line" class="pull-right btn btn-primary" href="/shop/checkout">
+										<span class="checkout hidden-xs">Process Checkout</span>
+										<span class="visible-xs-inline">Checkout</span>
+										<span class="fa fa-long-arrow-right"/>
+										
+									</a>
+									</div>
+									
+
+									<div class="oe_structure" />
+								</div>
+								<div class="col-lg-3 col-lg-offset-1 col-sm-3 col-md-3 text-muted" id="right_column">
+				                    
+				                </div>
+
+							<!-- </div> -->
+						</div>
+					<!-- </div> -->
+				</div>
+			</section>
+		</xpath>
+	</template>
+	
+	<template id="suggest_products" inherit_id="website_sale.suggested_products_list" priority="200">
+		<xpath expr="//table[@t-if='suggested_products']" position="replace"/>
+	</template>
+	
+	<template id="custom_cart_popover" inherit_id="website_sale.cart_popover" priority="200">
+		<a class="btn btn-primary" position="replace">
+			<a class="btn" href="/shop/cart">
+                       View Cart (<t t-esc="website_sale_order.cart_quantity" /> items)
+                     </a>
+		</a>
+	</template>
+	
+	<!--template id="checkout_custom" inherit_id="website_sale.checkout" priority="200">
+		<xpath expr="//div/a[@href='/shop/cart']" position="after">
+			<a class="pull-right mb32 " href="/shop/confirm_order">Confirm <span class="fa fa-long-arrow-right" /></a>
+		</xpath>
+	</template-->
+</odoo>
